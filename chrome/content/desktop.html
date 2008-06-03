@@ -1,0 +1,60 @@
+<link rel="icon" type="image/png" href="chrome://desktop/skin/icon.png">
+
+<link rel="stylesheet" type="text/css" href="chrome://desktop/skin/contextmenu.css">
+<link rel="stylesheet" type="text/css" href="chrome://desktop/skin/desktop.css">
+
+<ul id="menu" class="contextmenu">
+  <li id="menu-add">Add
+    <ul>
+      <li type="thumbnail">Thumbnail</li>
+      <li type="folder">Folder</li>
+      <li type="search">Search</li>
+    </ul>
+  </li>
+</ul>
+
+<div id="factory">
+  <div id="widget" class="widget">
+    <div class="header">
+      <div class="icon"></div>
+      <div class="title"></div>
+      <div class="button remove"></div>
+      <div class="button refresh"></div>
+      <div class="button properties"></div>
+    </div>
+    <div class="body"></div>
+  </div>
+
+  <a id="thumbnail" class="thumbnail">
+    <div class="throbber"></div>
+    <img>
+  </a>
+
+  <input id="search" class="search" type="text"/>
+</div>
+
+<script src="utils.js"></script>
+<script src="dom.js"></script>
+<script src="file.js"></script>
+<script src="prefs.js"></script>
+<script src="drag.js"></script>
+<script src="contextmenu.js"></script>
+<script src="bookmark.js"></script>
+<script src="storage.js"></script>
+<script src="widgets/factory.js"></script>
+<script src="widgets/widget.js"></script>
+<script src="widgets/thumbnail.js"></script>
+<script src="widgets/search.js"></script>
+<script>
+  var params = Utils.getQueryParams(document.location);
+  var storage = new Storage(params.folder);
+  document.title = storage.getTitle();
+
+  var factory = new Factory(storage);
+  factory.createWidgets();
+
+  ContextMenu.enable(document, Dom.get("menu"));
+  Dom.get("menu-add").addEventListener("click", function(e) {
+    factory.createWidget(e.target.type, ContextMenu.click.x, ContextMenu.click.y);
+  }, false);
+</script>

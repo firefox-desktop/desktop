@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  <window id="main-window">
+    <hbox style="overflow:hidden; height: 0;">
+      <vbox id="hidden-box"/>
+    </hbox>
+  </window>
+
+  <script src="utils.js"/>
+  <script src="file.js"/>
+  <script src="tabloader.js"/>
+  <script>
+    <![CDATA[
+      TabLoader.load("chrome://desktop/content/desktop.html");
+    ]]>
+  </script>
+</overlay>

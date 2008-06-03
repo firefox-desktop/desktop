@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<dialog id="search-properties"
+        title="Properties"
+        onload="initialize();"
+        ondialogaccept="onAccept();"
+        ondialogcancel="onCancel();"
+        persist="width height"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <listbox id="engines" ondblclick="Dom.get('search-properties').acceptDialog();"/>
+
+  <script src="../../dom.js"/>
+  <script>
+    <![CDATA[
+      function initialize() {
+        var properties = window.arguments[0].properties;
+
+        var listbox = Dom.get("engines");
+        var engines = getEngines();
+
+        for(var i in engines) {
+          var listitem = document.createElement("listitem");
+          listitem.setAttribute("class", "listitem-iconic");
+          listitem.setAttribute("label", engines[i].name);
+          listitem.setAttribute("image", engines[i].iconURI.spec);
+          listbox.appendChild(listitem);
+          if (engines[i].name == properties.title) {
+            listbox.selectedItem = listitem;
+          }
+        }
+      }
+
+      function onAccept() {
+        var properties = window.arguments[0].properties;
+        properties.title = Dom.get("engines").selectedItem.label;
+      }
+
+      function onCancel() {
+        window.arguments[0].properties = null;
+      }
+
+      function getEngines() {
+        var searchService = Components.classes["@mozilla.org/browser/search-service;1"]
+                            .getService(Components.interfaces.nsIBrowserSearchService);
+        return searchService.getEngines({});
+      }
+    ]]>
+  </script>
+</dialog>

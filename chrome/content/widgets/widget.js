@@ -53,10 +53,10 @@ function Widget() {
     }, false);
 
     this.view.addEventListener("drop", function() {
-      self.properties.left = Widget.snapToGrid(self.view.offsetLeft);
-      self.properties.top = Widget.snapToGrid(self.view.offsetTop);
-      self.properties.width = Widget.snapToGrid(self.view.offsetWidth);
-      self.properties.height = Widget.snapToGrid(self.view.offsetHeight);
+      self.properties.left = self.view.offsetLeft;
+      self.properties.top = self.view.offsetTop;
+      self.properties.width = self.view.clientWidth;
+      self.properties.height = self.view.clientHeight;
       self.save.call(self);
       self.updateView.call(self);
     }, false);
@@ -112,9 +112,3 @@ function Widget() {
 }
 
 Widget.HEADER_HEIGHT = 20;
-
-Widget.snapToGrid = function(value) {
-  const GRID_INTERVAL = 10;
-  var value = value + GRID_INTERVAL / 2;
-  return value - value % GRID_INTERVAL;
-}

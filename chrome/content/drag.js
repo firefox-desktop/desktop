@@ -1,4 +1,6 @@
 var Drag = {
+  GRID_INTERVAL: 64,
+  SNAP_INTERVAL: 10,
   MIN_DRAG: 10,
   BORDER_WIDTH: 3,
   click: { x: 0, y: 0, border: null },
@@ -47,6 +49,7 @@ var Drag = {
 
   onMouseUp: function(e) {
     if (Drag.inProgress) {
+      Drag.removeGrid();
       Drag.removeGlass();
       Drag.inProgress = false;
 
@@ -76,6 +79,21 @@ var Drag = {
     glass.parentNode.removeChild(glass);
   },
 
+  createGrid: function(element) {
+    var grid = document.createElement("div");
+    grid.id = "grid";
+    grid.style.zIndex = -1;
+    grid.style.width = "100%";
+    grid.style.height = "100%";
+    grid.style.backgroundImage = "url(chrome://desktop/skin/grid" + Drag.GRID_INTERVAL + ".png)";
+    document.body.appendChild(grid);
+  },
+
+  removeGrid: function() {
+    var grid = document.getElementById("grid");
+    grid.parentNode.removeChild(grid);
+  },
+
   getBorder: function(element, x, y) {
     var border = "";
     var deltaLeft = x - element.offsetLeft,
@@ -97,32 +115,33 @@ var Drag = {
     {
       Drag.inProgress = true;
       Drag.createGlass();
+      Drag.createGrid();
     }
     if (Drag.inProgress) {
       var deltaX = e.pageX - Drag.click.x;
       var deltaY = e.pageY - Drag.click.y;
     
       if (Drag.click.border.match(/e/)) {
-        var newWidth = Drag.original.width + deltaX;
+        var newWidth = Drag.snapToGrid(e, Drag.original.width + deltaX);
         Drag.object.style.width = Math.max(newWidth, 0);
       }
       if (Drag.click.border.match(/s/)) {
-        var newHeight = Drag.original.height + deltaY;
+        var newHeight = Drag.snapToGrid(e, Drag.original.height + deltaY);
         Drag.object.style.height = Math.max(newHeight, 0);
       }
       if (Drag.click.border.match(/w/)) {
         var right = Drag.original.left + Drag.original.width;
-        Drag.object.style.left = Math.min(Drag.original.left + deltaX, right);
+        Drag.object.style.left = Math.min(Drag.snapToGrid(e, Drag.original.left + deltaX), right);
         Drag.object.style.width = right - Drag.object.offsetLeft;
       }
       if (Drag.click.border.match(/n/)) {
         var bottom = Drag.original.top + Drag.original.height;
-        Drag.object.style.top = Math.min(Drag.original.top + deltaY, bottom);
+        Drag.object.style.top = Math.min(Drag.snapToGrid(e, Drag.original.top + deltaY), bottom);
         Drag.object.style.height = bottom - Drag.object.offsetTop;
       }
       if (!Drag.click.border) {
-        Drag.object.style.left = Drag.original.left + deltaX;
-        Drag.object.style.top = Drag.original.top + deltaY;
+        Drag.object.style.left = Drag.snap2ToGrid(e, Drag.original.left + deltaX, Drag.original.width);
+        Drag.object.style.top = Drag.snap2ToGrid(e, Drag.original.top + deltaY, Drag.original.height);
       }
       var event = document.createEvent("Event");
       event.initEvent(Drag.click.border ? "resize" : "drag", false, false);
@@ -133,5 +152,23 @@ var Drag = {
       var cursor = border ? border + "-resize" : "";
       Drag.hover.style.cursor = e.target.style.cursor = cursor;
     }
+  },
+  
+  snapToGrid: function(e, x) {
+    if (e.ctrlKey) return x;
+    var gx = Math.round(x/Drag.GRID_INTERVAL)*Drag.GRID_INTERVAL;
+    return (Math.abs(x-gx)<Drag.SNAP_INTERVAL) ? gx : x;
+  },
+
+  snap2ToGrid: function(e, x, szx) {
+    if (e.ctrlKey) return x;
+    var gx1 = Math.round(x/Drag.GRID_INTERVAL)*Drag.GRID_INTERVAL;
+    var gx2 = Math.round((x+szx)/Drag.GRID_INTERVAL)*Drag.GRID_INTERVAL;
+    if (Math.abs(x-gx1) <= Math.abs(x+szx-gx2)) {
+        return (Math.abs(x-gx1)<Drag.SNAP_INTERVAL) ? gx1 : x;
+    } else {
+        return (Math.abs(x+szx-gx2)<Drag.SNAP_INTERVAL) ? gx2-szx : x;
+    }
   }
+
 }

@@ -7,8 +7,8 @@ function Factory(storage) {
 
   this.createWidget = function(type, x, y) {
     var properties = {
-      left:     Widget.snapToGrid(x),
-      top:      Widget.snapToGrid(y),
+      left:     x,
+      top:      y,
       isFolder: type == "folder",
       url:      getURL(type)
     }

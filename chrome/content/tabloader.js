@@ -9,15 +9,15 @@ var TabLoader = {
     addEventListener("load", function() {
       TabLoader.loadInExistingTabs();
 
-      gBrowser.addEventListener("load", BtTabLoader.onPageLoad, true);
-      gBrowser.addEventListener("NewTab", BtTabLoader.onNewTab, false);
+      gBrowser.addEventListener("load", TabLoader.onPageLoad, true);
+      gBrowser.addEventListener("NewTab", TabLoader.onNewTab, false);
 
       var tabMenu = document.getAnonymousElementByAttribute(gBrowser, "anonid", "tabContextMenu");
       var newTabContextItem = tabMenu.firstChild;
-      newTabContextItem.addEventListener("command", BtTabLoader.onNewTab, false);
+      newTabContextItem.addEventListener("command", TabLoader.onNewTab, false);
 
-      var newTabCommand = $("cmd_newNavigatorTab");
-      newTabCommand.addEventListener("command", BtTabLoader.onNewTab, false);
+      var newTabCommand = document.getElementById("cmd_newNavigatorTab");
+      newTabCommand.addEventListener("command", TabLoader.onNewTab, false);
     }, false);
   },
 
@@ -71,6 +71,7 @@ var TabLoader = {
   },
 
   selectUrlBar: function() {
-    $("urlbar").select();
+    document.getElementById("urlbar").select();
   }
 }
+

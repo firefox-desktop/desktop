@@ -39,10 +39,12 @@ var Drag = {
     Drag.click.y = e.pageY;
     Drag.click.border = Drag.getBorder(Drag.object, e.pageX, e.pageY);
     Drag.original = {
-      left:   Drag.object.offsetLeft,
-      top:    Drag.object.offsetTop,
-      width:  Drag.object.offsetWidth,
-      height: Drag.object.offsetHeight
+      left:         Drag.object.offsetLeft,
+      top:          Drag.object.offsetTop,
+      width:        Drag.object.offsetWidth,
+      height:       Drag.object.offsetHeight,
+      borderWidth:  Drag.object.offsetWidth - Drag.object.clientWidth,
+      borderHeight: Drag.object.offsetHeight - Drag.object.clientHeight
     }
     e.preventDefault();
   },
@@ -122,22 +124,22 @@ var Drag = {
       var deltaY = e.pageY - Drag.click.y;
     
       if (Drag.click.border.match(/e/)) {
-        var newWidth = Drag.snapToGrid(e, Drag.original.width + deltaX);
-        Drag.object.style.width = Math.max(newWidth, 0);
+        var newWidth = Drag.snapToGrid(e, Drag.original.left + Drag.original.width + deltaX) - Drag.original.left;
+        Drag.object.style.width = Math.max(newWidth - Drag.original.borderWidth, 0);
       }
       if (Drag.click.border.match(/s/)) {
-        var newHeight = Drag.snapToGrid(e, Drag.original.height + deltaY);
-        Drag.object.style.height = Math.max(newHeight, 0);
+        var newHeight = Drag.snapToGrid(e, Drag.original.top + Drag.original.height + deltaY) - Drag.original.top;
+        Drag.object.style.height = Math.max(newHeight - Drag.original.borderHeight, 0);
       }
       if (Drag.click.border.match(/w/)) {
         var right = Drag.original.left + Drag.original.width;
-        Drag.object.style.left = Math.min(Drag.snapToGrid(e, Drag.original.left + deltaX), right);
-        Drag.object.style.width = right - Drag.object.offsetLeft;
+        Drag.object.style.left = Math.min(Drag.snapToGrid(e, Drag.original.left + deltaX), right - Drag.original.borderWidth);
+        Drag.object.style.width = right - Drag.object.offsetLeft - Drag.original.borderWidth;
       }
       if (Drag.click.border.match(/n/)) {
         var bottom = Drag.original.top + Drag.original.height;
-        Drag.object.style.top = Math.min(Drag.snapToGrid(e, Drag.original.top + deltaY), bottom);
-        Drag.object.style.height = bottom - Drag.object.offsetTop;
+        Drag.object.style.top = Math.min(Drag.snapToGrid(e, Drag.original.top + deltaY), bottom - Drag.original.borderHeight);
+        Drag.object.style.height = bottom - Drag.object.offsetTop - Drag.original.borderHeight;
       }
       if (!Drag.click.border) {
         Drag.object.style.left = Drag.snap2ToGrid(e, Drag.original.left + deltaX, Drag.original.width);
@@ -156,18 +158,18 @@ var Drag = {
   
   snapToGrid: function(e, x) {
     if (e.ctrlKey) return x;
-    var gx = Math.round(x/Drag.GRID_INTERVAL)*Drag.GRID_INTERVAL;
-    return (Math.abs(x-gx)<Drag.SNAP_INTERVAL) ? gx : x;
+    var gx = Math.round(x / Drag.GRID_INTERVAL) * Drag.GRID_INTERVAL;
+    return (Math.abs(x - gx) < Drag.SNAP_INTERVAL) ? gx : x;
   },
 
   snap2ToGrid: function(e, x, szx) {
     if (e.ctrlKey) return x;
-    var gx1 = Math.round(x/Drag.GRID_INTERVAL)*Drag.GRID_INTERVAL;
-    var gx2 = Math.round((x+szx)/Drag.GRID_INTERVAL)*Drag.GRID_INTERVAL;
-    if (Math.abs(x-gx1) <= Math.abs(x+szx-gx2)) {
-        return (Math.abs(x-gx1)<Drag.SNAP_INTERVAL) ? gx1 : x;
+    var gx1 = Math.round(x / Drag.GRID_INTERVAL) * Drag.GRID_INTERVAL;
+    var gx2 = Math.round((x + szx) / Drag.GRID_INTERVAL) * Drag.GRID_INTERVAL;
+    if (Math.abs(x - gx1) <= Math.abs(x + szx - gx2)) {
+        return (Math.abs(x - gx1) < Drag.SNAP_INTERVAL) ? gx1 : x;
     } else {
-        return (Math.abs(x+szx-gx2)<Drag.SNAP_INTERVAL) ? gx2-szx : x;
+        return (Math.abs(x + szx - gx2) < Drag.SNAP_INTERVAL) ? gx2 - szx : x;
     }
   }
 

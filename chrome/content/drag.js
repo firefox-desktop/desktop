@@ -1,6 +1,4 @@
 var Drag = {
-  GRID_INTERVAL: 64,
-  SNAP_INTERVAL: 10,
   MIN_DRAG: 10,
   BORDER_WIDTH: 3,
   click: { x: 0, y: 0, border: null },
@@ -82,12 +80,14 @@ var Drag = {
   },
 
   createGrid: function(element) {
+    Drag.gridInterval = Prefs.getInt("gridInterval");
+    Drag.snapInterval = Drag.gridInterval * 0.2;
     var grid = document.createElement("div");
     grid.id = "grid";
     grid.style.zIndex = -1;
     grid.style.width = "100%";
     grid.style.height = "100%";
-    grid.style.backgroundImage = "url(chrome://desktop/skin/grid" + Drag.GRID_INTERVAL + ".png)";
+    grid.style.backgroundImage = "url(chrome://desktop/skin/grid" + Drag.gridInterval + ".png)";
     document.body.appendChild(grid);
   },
 
@@ -158,18 +158,18 @@ var Drag = {
   
   snapToGrid: function(e, x) {
     if (e.ctrlKey) return x;
-    var gx = Math.round(x / Drag.GRID_INTERVAL) * Drag.GRID_INTERVAL;
-    return (Math.abs(x - gx) < Drag.SNAP_INTERVAL) ? gx : x;
+    var gx = Math.round(x / Drag.gridInterval) * Drag.gridInterval;
+    return (Math.abs(x - gx) < Drag.snapInterval) ? gx : x;
   },
 
   snap2ToGrid: function(e, x, szx) {
     if (e.ctrlKey) return x;
-    var gx1 = Math.round(x / Drag.GRID_INTERVAL) * Drag.GRID_INTERVAL;
-    var gx2 = Math.round((x + szx) / Drag.GRID_INTERVAL) * Drag.GRID_INTERVAL;
+    var gx1 = Math.round(x / Drag.gridInterval) * Drag.gridInterval;
+    var gx2 = Math.round((x + szx) / Drag.gridInterval) * Drag.gridInterval;
     if (Math.abs(x - gx1) <= Math.abs(x + szx - gx2)) {
-        return (Math.abs(x - gx1) < Drag.SNAP_INTERVAL) ? gx1 : x;
+        return (Math.abs(x - gx1) < Drag.snapInterval) ? gx1 : x;
     } else {
-        return (Math.abs(x + szx - gx2) < Drag.SNAP_INTERVAL) ? gx2 - szx : x;
+        return (Math.abs(x + szx - gx2) < Drag.snapInterval) ? gx2 - szx : x;
     }
   }
 

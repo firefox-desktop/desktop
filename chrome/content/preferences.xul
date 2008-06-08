@@ -6,16 +6,31 @@
 	dlgbuttons="accept,cancel"
 	onload="initialize();"
 	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-
 	<prefpane id="general-pane" label="Main">
+		<preferences>
+			<preference id="extensions.desktop.gridInterval" name="extensions.desktop.gridInterval" type="int"/>
+		</preferences>
 		<groupbox flex="1">
 			<caption label="Background"/>
-			<hbox>
-				<description control="browse" flex="1">Background image</description>
+			<hbox align="center">
+				<label control="browse" flex="1">Background image: </label>
 				<button class="browse" label="Browse"
 					oncommand="browseBackgroundImage();"/>					  
 				<button class="browse" label="Clear"
 					oncommand="clearBackgroundImage();"/>					  
+			</hbox>
+		</groupbox>
+		<groupbox flex="1">
+			<caption label="Positioning"/>
+			<hbox align="center">
+				<label control="browse">Grid size: </label>
+				<menulist id="gridInterval" preference="extensions.desktop.gridInterval">
+					<menupopup>
+						<menuitem label="16" value="16" />
+						<menuitem label="32" value="32" />
+						<menuitem label="64" value="64" />
+					</menupopup>
+				</menulist>
 			</hbox>
 		</groupbox>
 	</prefpane>

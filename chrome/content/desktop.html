@@ -1,7 +1,7 @@
 <link rel="icon" type="image/png" href="chrome://desktop/skin/icon.png">
 
 <link rel="stylesheet" type="text/css" href="chrome://desktop/skin/contextmenu.css">
-<link rel="stylesheet" type="text/css" href="chrome://desktop/skin/desktop.css">
+<link rel="stylesheet" type="text/css" href="chrome://desktop/skin/desktop-page.css">
 
 <ul id="menu" class="contextmenu">
   <li id="menu-add">Add
@@ -11,6 +11,7 @@
       <li type="search">Search</li>
     </ul>
   </li>
+  <li id="menu-prefs">Preferences</li>
 </ul>
 
 <div id="factory">
@@ -41,6 +42,7 @@
 <script src="contextmenu.js"></script>
 <script src="bookmark.js"></script>
 <script src="storage.js"></script>
+<script src="desktop.js"></script>
 <script src="widgets/factory.js"></script>
 <script src="widgets/widget.js"></script>
 <script src="widgets/thumbnail.js"></script>
@@ -52,9 +54,16 @@
 
   var factory = new Factory(storage);
   factory.createWidgets();
+  
+  if (Desktop.isBackgroundImageSpecified()) {
+    document.body.style.backgroundImage="url(chrome://desktop-profile/content/background)";
+  }
 
   ContextMenu.enable(document, Dom.get("menu"));
   Dom.get("menu-add").addEventListener("click", function(e) {
     factory.createWidget(e.target.type, ContextMenu.click.x, ContextMenu.click.y);
+  }, false);
+  Dom.get("menu-prefs").addEventListener("click", function(e) {
+    Desktop.openPreferences();
   }, false);
 </script>

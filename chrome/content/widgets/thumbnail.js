@@ -1,5 +1,4 @@
 function Thumbnail() {
-  const RATIO = 0.75;
   const TIMEOUT_LOAD = 60 * 1000;
   const TIMEOUT_RENDER = 0.5 * 1000;
   var loading;
@@ -9,16 +8,12 @@ function Thumbnail() {
 
     if (!this.properties.width) {
       this.properties.width = Prefs.getInt("thumbnail.width");
-      this.properties.height = getWidgetHeight(this.properties.width);
+      this.properties.height = Prefs.getInt("thumbnail.height");
     }
     if (this.properties.isFolder) {
       this.properties.url = "chrome://desktop/content/desktop.html?folder=" +
                             this.properties.id;
     }
-  }
-
-  function getWidgetHeight(width) {
-    return Widget.HEADER_HEIGHT + getHeight(width);
   }
 
   getImageName = function() {
@@ -73,15 +68,10 @@ function Thumbnail() {
     else this.updateView();
 
     var self = this;
-    this.view.addEventListener("resize", function() {
-      var img = Dom.child(self.view, "img");
-      Drag.click.border.match(/[sn]/)
-        ? self.view.style.width = getWidth(img.offsetHeight)
-        : self.view.style.height = getWidgetHeight(img.offsetWidth);
-    }, false);
 
     this.view.addEventListener("drop", function() {
       Prefs.setInt("thumbnail.width", self.properties.width);
+      Prefs.setInt("thumbnail.height", self.properties.height);
     }, false);
 
     return this.view;
@@ -121,7 +111,7 @@ function Thumbnail() {
 
   function refreshImage() {
     var self = this;
-    loadURI(this.properties.url || "about:blank", function(iframe) {
+    loadURI(this.properties.url || "about:blank", this.properties.width, this.properties.height, function(iframe) {
       if (!self.properties.title) {
         var doc = iframe.contentDocument;
         self.properties.title = doc.title;
@@ -137,7 +127,7 @@ function Thumbnail() {
 
   function refreshCustomImage() {
     var self = this;         
-    loadImage(this.properties.customImage, function(iframe) {
+    loadImage(this.properties.customImage, this.properties.width, this.properties.height, function(iframe) {
       saveImage.call(self, iframe);
     });
   }
@@ -145,7 +135,7 @@ function Thumbnail() {
   function saveImage(iframe) {
     var self = this;
     setTimeout(function() {
-      var image = createImage(iframe.contentWindow, self.properties.width);
+      var image = createImage(iframe.contentWindow, self.properties.width, self.properties.height - Widget.HEADER_HEIGHT);
       File.writeFile(getImageFile.call(self), image);
       Dom.remove(iframe);
 
@@ -157,80 +147,74 @@ function Thumbnail() {
     TIMEOUT_RENDER);
   }
 
-  function createFrame() {
+  function createFrame(aspect) {
     var browserWindow = Utils.getBrowserWindow();
     var doc = browserWindow.document;
 
     var iframe = doc.createElement("browser");
     iframe.width = 1024;
-    iframe.height = 768;
+    iframe.height = iframe.width*aspect;
     iframe.setAttribute("type", "content");
     doc.getElementById("hidden-box").appendChild(iframe);
     return iframe;
   }
 
-  function loadURI(url, onReady) {
+  function loadURI(url, width, height, onReady) {
     function onFrameLoad() {
       iframe.removeEventListener("load", onFrameLoad, true);
       clearTimeout(loadTimeout);
       onReady(iframe);
     }
-    var iframe = createFrame();
+    var iframe = createFrame(height/width);
     iframe.addEventListener("load", onFrameLoad, true);
     var loadTimeout = setTimeout(onFrameLoad, TIMEOUT_LOAD);
     iframe.setAttribute("src", url);
   }
 
-  function loadImage(url, onReady) {
+  function loadImage(url, width, height, onReady) {
     var url = url + "#" + new Date().getTime();
 
-    loadURI(url, function(iframe) {
+    loadURI(url, width, height, function(iframe) {
       var doc = iframe.contentDocument;
       var img = doc.body.firstChild;
 
-      if (getHeight(img.width) / img.height > 1) {
-        doc.body.style.width = img.width;
-        doc.body.style.height = getHeight(img.width);
-      }
-      else {
-        doc.body.style.width = getWidth(img.height);
-        doc.body.style.height = img.height;
-      }
+      doc.body.style.width = img.width;
+      doc.body.style.height = img.height;
       doc.body.style.background = "white";
       doc.body.style.margin = 0;
       doc.body.style.display = "table-cell";
       doc.body.style.textAlign = "center";
       doc.body.style.verticalAlign = "middle";
+      
+      doc.forcewidth = img.width;
+      doc.forceheight = img.height;
 
       onReady(iframe);
     });
   }
 
-  function getWidth(height) {
-    return Math.floor(height / RATIO);
-  }
-
-  function getHeight(width) {
-    return Math.floor(width * RATIO);
-  }
-
   function getWindowWidth(wnd) {
     var doc = wnd.document;
-    return (doc.body || doc.documentElement).offsetWidth;
+    if (doc.forcewidth) return doc.forcewidth;
+    return (doc.body || doc.documentElement).clientWidth;
   }
 
-  function createImage(wnd, imageWidth) {
-    imageWidth = imageWidth || getWindowWidth(wnd);
+  function getWindowHeight(wnd) {
+    var doc = wnd.document;
+    if (doc.forceheight) return doc.forceheight;
+    return (doc.body || doc.documentElement).clientHeight;
+  }
 
+  function createImage(wnd, imageWidth, imageHeight) {
     var canvas = document.createElement("canvas");
     canvas.width = imageWidth;
-    canvas.height = getHeight(canvas.width);
+    canvas.height = imageHeight;
 
     var context = canvas.getContext("2d");
     context.clearRect(0, 0, canvas.width, canvas.height);
 
     var width = getWindowWidth(wnd);
-    var height = getHeight(width);
+    var height = getWindowHeight(wnd);
     context.scale(canvas.width / width, canvas.height / height);
     context.drawWindow(wnd, 0, 0, width, height, "white");
 

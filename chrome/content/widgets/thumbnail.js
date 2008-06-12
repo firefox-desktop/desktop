@@ -111,7 +111,7 @@ function Thumbnail() {
 
   function refreshImage() {
     var self = this;
-    loadURI(this.properties.url || "about:blank", this.properties.width, this.properties.height, function(iframe) {
+    loadURI(this.properties.url || "about:blank", this.properties.width, this.properties.height - Widget.HEADER_HEIGHT, function(iframe) {
       if (!self.properties.title) {
         var doc = iframe.contentDocument;
         self.properties.title = doc.title;
@@ -127,7 +127,7 @@ function Thumbnail() {
 
   function refreshCustomImage() {
     var self = this;         
-    loadImage(this.properties.customImage, this.properties.width, this.properties.height, function(iframe) {
+    loadImage(this.properties.customImage, this.properties.width, this.properties.height - Widget.HEADER_HEIGHT, function(iframe) {
       saveImage.call(self, iframe);
     });
   }
@@ -135,7 +135,7 @@ function Thumbnail() {
   function saveImage(iframe) {
     var self = this;
     setTimeout(function() {
-      var image = createImage(iframe.contentWindow, self.properties.width, self.properties.height - Widget.HEADER_HEIGHT);
+      var image = createImage(iframe, self.properties.width, self.properties.height - Widget.HEADER_HEIGHT);
       File.writeFile(getImageFile.call(self), image);
       Dom.remove(iframe);
 
@@ -186,26 +186,14 @@ function Thumbnail() {
       doc.body.style.textAlign = "center";
       doc.body.style.verticalAlign = "middle";
       
-      doc.forcewidth = img.width;
-      doc.forceheight = img.height;
+      iframe.width = img.width;
+      iframe.height = img.height;
 
       onReady(iframe);
     });
   }
 
-  function getWindowWidth(wnd) {
-    var doc = wnd.document;
-    if (doc.forcewidth) return doc.forcewidth;
-    return (doc.body || doc.documentElement).clientWidth;
-  }
-
-  function getWindowHeight(wnd) {
-    var doc = wnd.document;
-    if (doc.forceheight) return doc.forceheight;
-    return (doc.body || doc.documentElement).clientHeight;
-  }
-
-  function createImage(wnd, imageWidth, imageHeight) {
+  function createImage(iframe, imageWidth, imageHeight) {
     var canvas = document.createElement("canvas");
     canvas.width = imageWidth;
     canvas.height = imageHeight;
@@ -213,10 +201,10 @@ function Thumbnail() {
     var context = canvas.getContext("2d");
     context.clearRect(0, 0, canvas.width, canvas.height);
 
-    var width = getWindowWidth(wnd);
-    var height = getWindowHeight(wnd);
+    var width = iframe.width;
+    var height = iframe.height;
     context.scale(canvas.width / width, canvas.height / height);
-    context.drawWindow(wnd, 0, 0, width, height, "white");
+    context.drawWindow(iframe.contentWindow, 0, 0, width, height, "white");
 
     var dataURL = canvas.toDataURL("image/png");
     return atob(dataURL.replace(/^data:image\/png;base64,/, ""));

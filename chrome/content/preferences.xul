@@ -1,70 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet href="chrome://desktop/skin/desktop.css" type="text/css"?>
+<?xml-stylesheet href="chrome://desktop/skin/preferences.css" type="text/css"?>
 <prefwindow id="desktop-preferences-window"
-	persist="width height"
-	title="Desktop preferences"
-	dlgbuttons="accept,cancel"
-	onload="initialize();"
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-	<prefpane id="general-pane" label="Main">
-		<preferences>
-			<preference id="extensions.desktop.gridInterval" name="extensions.desktop.gridInterval" type="int"/>
-		</preferences>
-		<groupbox flex="1">
-			<caption label="Background"/>
-			<hbox align="center">
-				<label control="browse" flex="1">Background image: </label>
-				<button class="browse" label="Browse"
-					oncommand="browseBackgroundImage();"/>					  
-				<button class="browse" label="Clear"
-					oncommand="clearBackgroundImage();"/>					  
-			</hbox>
-		</groupbox>
-		<groupbox flex="1">
-			<caption label="Positioning"/>
-			<hbox align="center">
-				<label control="browse">Grid size: </label>
-				<menulist id="gridInterval" preference="extensions.desktop.gridInterval">
-					<menupopup>
-						<menuitem label="16" value="16" />
-						<menuitem label="32" value="32" />
-						<menuitem label="64" value="64" />
-					</menupopup>
-				</menulist>
-			</hbox>
-		</groupbox>
-	</prefpane>
+    persist="width height"
+    title="Desktop preferences"
+    dlgbuttons="accept,cancel"
+    onload="initialize();"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    <prefpane id="general-pane" label="Main">
+        <preferences>
+            <preference id="extensions.desktop.gridInterval" name="extensions.desktop.gridInterval" type="int"/>
+        </preferences>
+        <groupbox flex="1">
+            <caption label="Background"/>
+            <hbox align="center">
+                <label control="browse" flex="1">Background image: </label>
+                <button class="browse" label="Browse"
+                    oncommand="browseBackgroundImage();"/>                      
+                <button class="browse" label="Clear"
+                    oncommand="clearBackgroundImage(true);"/>                      
+            </hbox>
+        </groupbox>
+        <groupbox flex="1">
+            <caption label="Positioning"/>
+            <hbox align="center">
+                <label control="browse">Grid size: </label>
+                <menulist id="gridInterval" preference="extensions.desktop.gridInterval">
+                    <menupopup>
+                        <menuitem label="16" value="16" />
+                        <menuitem label="32" value="32" />
+                        <menuitem label="64" value="64" />
+                    </menupopup>
+                </menulist>
+            </hbox>
+        </groupbox>
+    </prefpane>
   
-	<script src="utils.js"/>
-	<script src="desktop.js"/>
-	<script src="file.js"/>
-	<script>
-	<![CDATA[
-		function initialize() {
-		}
+    <script src="utils.js"/>
+    <script src="desktop.js"/>
+    <script src="file.js"/>
+    <script>
+    <![CDATA[
+        function initialize() {
+        }
+        
+        function browseBackgroundImage() {
+            var file = File.chooseFile("open", ["images"]);
+            if (file) {
+                clearBackgroundImage(false);
+                file.copyTo(File.getDataDirectory(), "background");
+                redrawDesktop();
+            }
+        }
 
-		function browseBackgroundImage() {
-			var file = File.chooseFile("open", ["images"]);
-			if (file) {
-				file.copyTo(File.getDataDirectory(), "background");
-				redrawDesktop();
-			}
-		}
-
-		function clearBackgroundImage() {
-			var dir = File.getDataDirectory();
-			dir.append("background");
-			try {
-				dir.remove(false);
-			} catch (e) {
-			}
-			redrawDesktop();
-		}
-
-		function redrawDesktop() {
-			Desktop.forEachDesktopBrowser(Desktop.reloadPage);
-		}
-	]]>
-	</script>
+        function clearBackgroundImage(redraw) {
+            var dir = File.getDataDirectory();
+            dir.append("background");
+            try {
+                dir.remove(false);
+            } catch (e) { }
+            if (redraw) redrawDesktop();
+        }
+        
+        function redrawDesktop() {
+            Desktop.forEachDesktopBrowser(Desktop.reloadPage);
+        }
+    ]]>
+    </script>
 
 </prefwindow>

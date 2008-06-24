@@ -9,8 +9,9 @@
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
   <listbox id="engines" ondblclick="Dom.get('search-properties').acceptDialog();"/>
-
+  <checkbox id="focus" label="Give focus on start" checked="false"/>
   <script src="../../dom.js"/>
+  <script src="../../prefs.js"/>
   <script>
     <![CDATA[
       function initialize() {
@@ -27,6 +28,9 @@
           listbox.appendChild(listitem);
           if (engines[i].name == properties.title) {
             listbox.selectedItem = listitem;
+            if (engines[i].name == Prefs.getString("focus")) {
+              Dom.get("focus").checked=true;
+            }
           }
         }
       }
@@ -34,6 +38,12 @@
       function onAccept() {
         var properties = window.arguments[0].properties;
         properties.title = Dom.get("engines").selectedItem.label;
+        if (Dom.get("focus").checked==true) {
+          Prefs.setString("focus", properties.title);
+        }
+        else if (properties.title==Prefs.getString("focus")) {
+          Prefs.setString("focus", "");
+        }
       }
 
       function onCancel() {

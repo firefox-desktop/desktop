@@ -30,7 +30,10 @@ function Widget() {
 
     Drag.enable(this.view);
     this.updateView();
-
+    if (this.properties.title == Prefs.getString("focus")) {
+	  var view = this.view;
+	  setTimeout(function () {Dom.child(view, "search").focus()}, 0);
+    }
     var self = this;
     var title = Dom.child(this.view, "title");
     title.addEventListener("dblclick", function() {

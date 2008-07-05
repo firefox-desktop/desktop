@@ -6,7 +6,8 @@ var Drag = {
   hover: null,
   object: null,
   inProgress: false,
-
+  prevTarget: null,
+  
   enable: function(element, options) {
     element.addEventListener("mousedown", Drag.onMouseDown, false);
     element.addEventListener("mouseover", Drag.onMouseOver, false);
@@ -152,6 +153,10 @@ var Drag = {
     if (Drag.hover) {
       var border = Drag.getBorder(Drag.hover, e.pageX, e.pageY);
       var cursor = border ? border + "-resize" : "";
+      if (Drag.prevTarget && Drag.prevTarget != e.target) {
+        Drag.prevTarget.style.cursor = "";
+      }
+      Drag.prevTarget = cursor == "" ? null : e.target;
       Drag.hover.style.cursor = e.target.style.cursor = cursor;
     }
   },
@@ -174,3 +179,4 @@ var Drag = {
   }
 
 }
+

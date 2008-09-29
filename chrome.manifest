@@ -4,3 +4,6 @@ content desktop-profile ../../desktop/
 overlay chrome://browser/content/browser.xul chrome://desktop/content/overlay.xul
 
 skin desktop classic chrome/skin/
+
+locale desktop en-US chrome/locale/en-US/
+locale desktop ru-RU chrome/locale/ru-RU/

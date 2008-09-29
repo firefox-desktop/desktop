@@ -1,0 +1,10 @@
+<!ENTITY desktoppref.Preferences "Desktop preferences">
+
+<!ENTITY desktoppref.Background "Background">
+<!ENTITY desktoppref.BackgroundImage "Background image">
+
+<!ENTITY desktoppref.Positioning "Aligning">
+<!ENTITY desktoppref.GridSize "Grid size">
+
+<!ENTITY desktop.Browse "Browse">
+<!ENTITY desktop.Clear "Clear">

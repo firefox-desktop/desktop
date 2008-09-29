@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet href="chrome://desktop/skin/preferences.css" type="text/css"?>
+<!DOCTYPE window SYSTEM "chrome://desktop/locale/preferences.dtd">
+
 <prefwindow id="desktop-preferences-window"
     persist="width height"
-    title="Desktop preferences"
+    title="&desktoppref.Preferences;"
     dlgbuttons="accept,cancel"
     onload="initialize();"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
@@ -11,19 +13,19 @@
             <preference id="extensions.desktop.gridInterval" name="extensions.desktop.gridInterval" type="int"/>
         </preferences>
         <groupbox flex="1">
-            <caption label="Background"/>
+            <caption label="&desktoppref.Background;"/>
             <hbox align="center">
-                <label control="browse" flex="1">Background image: </label>
-                <button class="browse" label="Browse"
+                <label control="browse" flex="1">&desktoppref.BackgroundImage;: </label>
+                <button class="browse" label="&desktop.Browse;"
                     oncommand="browseBackgroundImage();"/>                      
-                <button class="browse" label="Clear"
+                <button class="browse" label="&desktop.Clear;"
                     oncommand="clearBackgroundImage(true);"/>                      
             </hbox>
         </groupbox>
         <groupbox flex="1">
-            <caption label="Positioning"/>
+            <caption label="&desktoppref.Positioning;"/>
             <hbox align="center">
-                <label control="browse">Grid size: </label>
+                <label control="browse">&desktoppref.GridSize;: </label>
                 <menulist id="gridInterval" preference="extensions.desktop.gridInterval">
                     <menupopup>
                         <menuitem label="16" value="16" />

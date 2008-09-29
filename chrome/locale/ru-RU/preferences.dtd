@@ -1,0 +1,10 @@
+<!ENTITY desktoppref.Preferences "Настройки рабочего стола">
+
+<!ENTITY desktoppref.Background "Фон">
+<!ENTITY desktoppref.BackgroundImage "Фоновое изображение">
+
+<!ENTITY desktoppref.Positioning "Выравнивание">
+<!ENTITY desktoppref.GridSize "Размер сетки">
+
+<!ENTITY desktop.Browse "Обзор">
+<!ENTITY desktop.Clear "Очистить">

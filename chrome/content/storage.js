@@ -1,5 +1,6 @@
 function Storage(folderId) {
   const ROOT_TITLE = "Desktop";
+  const ANNOTATION = "bookmarkProperties/description";
 
   if (!folderId) folderId = getRootId();
 
@@ -21,7 +22,7 @@ function Storage(folderId) {
     for(var i in bookmarks) {
       var bookmark = bookmarks[i];
       try {
-        var annotation = Bookmark.getAnnotation(bookmark.id, "desktop");
+        var annotation = Bookmark.getAnnotation(bookmark.id, ANNOTATION);
         Utils.merge(bookmark, eval(annotation));
       }
       catch(e) { alert(e); }
@@ -40,11 +41,11 @@ function Storage(folderId) {
     for(var i in exclude) {
       delete annotation[exclude[i]];
     }
-    Bookmark.setAnnotation(object.id, "desktop", Utils.toJSON(annotation));
+    Bookmark.setAnnotation(object.id, ANNOTATION, Utils.toJSON(annotation));
   }
 
   this.removeObject = function(id) {
-    Bookmark.removeAnnotation(id, "desktop");
+    Bookmark.removeAnnotation(id, ANNOTATION);
     Bookmark.removeBookmark(id);
   }
 }

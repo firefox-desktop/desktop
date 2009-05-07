@@ -3,12 +3,15 @@ var ContextMenu = {
   current: null,
 
   enable: function(element, menu) {
-    element.addEventListener("contextmenu", function(e) {
+    var handler = function(e) {
+      if (e.button != 2) return;
       e.preventDefault();
       ContextMenu.click.x = e.pageX;
       ContextMenu.click.y = e.pageY;
       ContextMenu.open(menu, e.pageX, e.pageY);
-    }, false);
+    };
+    element.addEventListener("contextmenu", handler, false);
+    element.addEventListener("dblclick", handler, false);
   },
 
   open: function(menu, x, y) {

@@ -16,7 +16,12 @@ var ContextMenu = {
 
   open: function(menu, x, y) {
     ContextMenu.close();
-                                 
+    
+    if (!menu.translated) {
+      ContextMenu.translate(menu);
+      menu.translated = true;
+    }
+    
     ContextMenu.current = menu;
     document.body.appendChild(ContextMenu.current);
     ContextMenu.showSubmenu(ContextMenu.current, x, y);
@@ -31,6 +36,17 @@ var ContextMenu = {
       document.addEventListener("blur", ContextMenu.close, false);
       Dom.remove(ContextMenu.current);
       ContextMenu.current = null;
+    }
+  },
+  
+  translate: function(menu) {
+    for (var i=0; i<menu.childNodes.length; i++) {
+      var node = menu.childNodes[i];
+      if (node.nodeName=='LI') {
+        var str = Desktop.translate("context"+Utils.trim(node.firstChild.nodeValue));
+        node.firstChild.nodeValue = str;
+      }
+      ContextMenu.translate(node);      
     }
   },
 

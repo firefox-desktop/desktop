@@ -32,6 +32,15 @@ Desktop = {
 		var bg = File.getDataDirectory();
 		bg.append("background");
 		return bg.exists();
-	}
+	},
+    
+    translate : function(key) {
+        if (!Desktop.bundle) {
+            Desktop.bundle = Components.classes["@mozilla.org/intl/stringbundle;1"]  
+                .getService(Components.interfaces.nsIStringBundleService)  
+                .createBundle("chrome://desktop/locale/desktop.properties");
+        }
+        return Desktop.bundle.GetStringFromName(key);
+    }
 
 }

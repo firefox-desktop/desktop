@@ -83,6 +83,10 @@ var Utils = {
   
   getBrowser: function() {
     return Utils.getBrowserWindow().getBrowser();
+  },
+  
+  trim: function(str) {
+    return str.replace(/^[\s]*(.*[\S])[\s]*$/, '$1');
   }
   
 }

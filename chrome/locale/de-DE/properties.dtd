@@ -1,0 +1,6 @@
+<!ENTITY desktop.Properties "Eigenschaften">
+
+<!ENTITY desktopthumb.URL "URL">
+<!ENTITY desktopthumb.CustomImage "Eigenes Bild">
+
+<!ENTITY desktopsearch.GiveFocus "Fokusiere beim Start">

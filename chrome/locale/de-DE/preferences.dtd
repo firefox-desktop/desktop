@@ -1,0 +1,10 @@
+<!ENTITY desktoppref.Preferences "Desktop Einstellungen">
+
+<!ENTITY desktoppref.Background "Hintergrund">
+<!ENTITY desktoppref.BackgroundImage "Hintergrundbild">
+
+<!ENTITY desktoppref.Positioning "Ausrichtung">
+<!ENTITY desktoppref.GridSize "Rastergröße">
+
+<!ENTITY desktop.Browse "Suchen">
+<!ENTITY desktop.Clear "Löschen">

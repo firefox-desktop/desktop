@@ -7,3 +7,4 @@ skin desktop classic chrome/skin/
 
 locale desktop en-US chrome/locale/en-US/
 locale desktop ru-RU chrome/locale/ru-RU/
+locale desktop de-DE chrome/locale/de-DE/

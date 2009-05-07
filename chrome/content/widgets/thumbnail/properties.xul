@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet href="properties.css" type="text/css"?>
+<!DOCTYPE dialog SYSTEM "chrome://desktop/locale/properties.dtd">
 <dialog id="thumbnail-properties"
-        title="Properties"
+        title="&desktop.Properties;"
         onload="initialize();"
         ondialogaccept="onAccept();"
         ondialogcancel="onCancel();"
@@ -15,14 +16,14 @@
     </columns>
     <rows>
       <row align="center">
-        <label value="URL:"/>
+        <label value="&desktopthumb.URL;:"/>
         <textbox id="url" type="autocomplete"
                  enablehistory="true" autocompletesearch="history"/>
         <button id="browseFile" label="&#x2026;"
                 oncommand="browseFile();"/>
       </row>
       <row align="center">
-        <label value="Custom image:"/>
+        <label value="&desktopthumb.CustomImage;:"/>
         <textbox id="customImage" type="autocomplete" enablehistory="true"
                  autocompletesearch="history"/>
         <button id="browseCustomImage" label="&#x2026;"

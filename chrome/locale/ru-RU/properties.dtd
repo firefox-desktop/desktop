@@ -1,0 +1,5 @@
+<!ENTITY desktop.Properties "Свойства">
+<!ENTITY desktopthumb.URL "URL">
+<!ENTITY desktopthumb.CustomImage "Изображение">
+
+<!ENTITY desktopsearch.GiveFocus "Выделять при старте">

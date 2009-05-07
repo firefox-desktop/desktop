@@ -72,7 +72,7 @@ var Utils = {
   confirm: function(message) {
     var prompts = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
                   .getService(Components.interfaces.nsIPromptService);
-    return prompts.confirm(window, "Desktop", message);
+    return prompts.confirm(window, Desktop.translate("Desktop"), message);
   },
 
   getBrowserWindow: function() {

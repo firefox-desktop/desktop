@@ -68,7 +68,7 @@ function Widget() {
   }
 
   this.remove = function() {
-    if (Utils.confirm("Remove widget?")) {
+    if (Utils.confirm(Desktop.translate("dialogRemoveWidget"))) {
       if (this.view) Dom.remove(this.view);
       this.storage.removeObject(this.properties.id);
       return true;

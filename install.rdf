@@ -17,6 +17,7 @@
    
     <em:name>Desktop</em:name>
     <em:creator>telega</em:creator>
-    <em:contributor>rtimush</em:contributor>
+    <em:developer>rtimush</em:developer>
+    <em:translator>ushi (de-DE)</em:translator>
   </Description>      
 </RDF>

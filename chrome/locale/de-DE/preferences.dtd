@@ -4,7 +4,7 @@
 <!ENTITY desktoppref.BackgroundImage "Hintergrundbild">
 
 <!ENTITY desktoppref.Positioning "Ausrichtung">
-<!ENTITY desktoppref.GridSize "Rastergröße">
+<!ENTITY desktoppref.GridSize "Rastergr&#246;&#223;e">
 
 <!ENTITY desktop.Browse "Suchen">
-<!ENTITY desktop.Clear "Löschen">
+<!ENTITY desktop.Clear "L&#246;schen">

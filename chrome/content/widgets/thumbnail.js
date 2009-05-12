@@ -19,7 +19,7 @@ function Thumbnail() {
   getImageName = function() {
     return this.properties.id + ".png";
   }
- 
+
   getImageFile = function() {
     var file = File.getDataDirectory();
     file.append(getImageName.call(this));
@@ -74,6 +74,12 @@ function Thumbnail() {
       Prefs.setInt("thumbnail.height", self.properties.height);
     }, false);
 
+    // Fix for #17. This code disables Tab Mix Plus "Force new tab" option. Magic.
+    var anchor = Dom.child(this.view, "a");
+    anchor.addEventListener("click", function(e) {
+      e.stopPropagation(); return false;
+    }, false);
+
     return this.view;
   }
 
@@ -96,7 +102,7 @@ function Thumbnail() {
 
   this.openProperties = function() {
     var param = { properties: Utils.clone(this.properties) };
- 
+
     openDialog("widgets/thumbnail/properties.xul", "properties",
                "chrome,centerscreen,modal,resizable", param);
     if (param.properties) {
@@ -126,7 +132,7 @@ function Thumbnail() {
   }
 
   function refreshCustomImage() {
-    var self = this;         
+    var self = this;
     loadImage(this.properties.customImage, this.properties.width, this.properties.height - Widget.HEADER_HEIGHT, function(iframe) {
       saveImage.call(self, iframe);
     });
@@ -185,7 +191,7 @@ function Thumbnail() {
       doc.body.style.display = "table-cell";
       doc.body.style.textAlign = "center";
       doc.body.style.verticalAlign = "middle";
-      
+
       iframe.width = img.width;
       iframe.height = img.height;
 

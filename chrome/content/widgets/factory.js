@@ -29,8 +29,11 @@ function Factory(storage) {
 
   this.createWidgets = function() {
     var objects = storage.getObjects();
+    var hasWidgets = false;
     for(var i in objects) {
       createWidget(objects[i]);
+      hasWidgets = true;
     }
+    return hasWidgets;
   }
 }

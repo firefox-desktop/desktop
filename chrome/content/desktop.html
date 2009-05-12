@@ -34,6 +34,8 @@
   <input id="search" class="search" type="text"/>
 </div>
 
+<div id="quickstart" style="display: none;"></div>
+
 <script src="utils.js"></script>
 <script src="dom.js"></script>
 <script src="file.js"></script>
@@ -53,7 +55,13 @@
   document.title = storage.getTitle();
 
   var factory = new Factory(storage);
-  factory.createWidgets();
+  var hasWidgets = factory.createWidgets();
+  
+  var quickstart = Dom.get("quickstart");
+  if (!hasWidgets) {
+    quickstart.innerHTML = Desktop.translate("quickstart");
+    quickstart.style.display = "block";
+  }
   
   if (Desktop.isBackgroundImageSpecified()) {
     document.body.style.backgroundImage="url(chrome://desktop-profile/content/background)";
@@ -61,6 +69,7 @@
 
   ContextMenu.enable(document, Dom.get("menu"));
   Dom.get("menu-add").addEventListener("click", function(e) {
+    quickstart.style.display = "none";
     factory.createWidget(e.target.type, ContextMenu.click.x, ContextMenu.click.y);
   }, false);
   Dom.get("menu-prefs").addEventListener("click", function(e) {

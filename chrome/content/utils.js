@@ -58,7 +58,7 @@ var Utils = {
             json += value;
             break;
         case "string":
-            json += "'" + value.replace(/([\\\'\n])/g, "\\$1") + "'";
+            json += "'" + value.replace(/([\\\'\n])/g, "\\$1") + "'"; /* This comment was added to fix Midnight commander colorizing bug " */
             break;
         default:
             json += Utils.toJSON(value, level + 1);
@@ -87,6 +87,15 @@ var Utils = {
   
   trim: function(str) {
     return str.replace(/^[\s]*(.*[\S])[\s]*$/, '$1');
-  }
+  },
   
+  getDocumentTab: function(doc) {
+    var tabs = gBrowser.tabContainer.childNodes;
+    for(var i = 0; i < tabs.length; i++) {
+      if (tabs[i].linkedBrowser.contentDocument == doc) {
+        return tabs[i];
+      }
+    }
+  }
+ 
 }

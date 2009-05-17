@@ -47,6 +47,7 @@ var TabLoader = {
 
   onPageLoad: function(event) {
     var doc = event.originalTarget;
+    if (!Utils.getDocumentTab(doc)) return;
     if (doc.location == TabLoader.url) {
       TabLoader.addToHistory(doc.location, doc.title);
     }

@@ -21,5 +21,6 @@
     <em:translator>ushi (de-DE)</em:translator>
     <em:homepageURL>https://addons.mozilla.org/firefox/addon/11781</em:homepageURL>
     <em:optionsURL>chrome://desktop/content/preferences.xul</em:optionsURL>
+    <em:iconURL>chrome://desktop/skin/desktop.png</em:iconURL>
   </Description>      
 </RDF>

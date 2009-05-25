@@ -29,6 +29,11 @@ function Storage(folderId) {
     }
     return bookmarks;
   }
+  
+  this.getProperties = function() {
+    var annotation = Bookmark.getAnnotation(folderId, ANNOTATION);
+    return eval(annotation);
+  }
 
   this.saveObject = function(object) {
     if (object.id) Bookmark.updateBookmark(object.id, object.url, object.title);

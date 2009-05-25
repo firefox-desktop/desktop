@@ -63,6 +63,11 @@
     quickstart.style.display = "block";
   }
   
+  var properties = storage.getProperties();
+  if (properties.background) {
+    document.body.style.backgroundColor=properties.background;
+  }
+  
   if (Desktop.isBackgroundImageSpecified()) {
     document.body.style.backgroundImage="url(chrome://desktop-profile/content/background)";
   }

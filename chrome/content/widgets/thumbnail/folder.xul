@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="properties.css" type="text/css"?>
+<!DOCTYPE dialog SYSTEM "chrome://desktop/locale/properties.dtd">
+<dialog id="folder-properties"
+        title="&desktop.Properties;"
+        onload="initialize();"
+        ondialogaccept="onAccept();"
+        ondialogcancel="onCancel();"
+        persist="width height"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <grid>
+    <columns>
+      <column/>
+      <column flex="1"/>
+    </columns>
+    <rows>
+      <row align="center">
+        <label value="&desktopfolder.BackgroundColor;:"/>
+        <textbox id="bgColor"/>
+      </row>
+      <row align="center">
+        <label value="&desktopthumb.CustomImage;:"/>
+        <textbox id="customImage" type="autocomplete" enablehistory="true"
+                 autocompletesearch="history"/>
+        <button id="browseCustomImage" label="&#x2026;"
+                oncommand="browseCustomImage();"/>
+      </row>
+    </rows>
+  </grid>
+
+  <script src="../../utils.js"/>
+  <script src="../../dom.js"/>
+  <script src="../../file.js"/>
+  <script>
+    <![CDATA[
+      function initialize() {
+        var properties = window.arguments[0].properties;
+        Dom.get("customImage").value = properties.customImage || "";
+        Dom.get("bgColor").value = properties.background || "#FFFFFF";
+      }
+
+      function onAccept() {
+        var properties = window.arguments[0].properties;
+        properties.customImage = Dom.get("customImage").value;
+        properties.background = Dom.get("bgColor").value;
+      }
+
+      function onCancel() {
+        window.arguments[0].properties = null;
+      }
+
+      function browseCustomImage() {
+        var file = File.chooseFile("open", ["images"]);
+        if (file) Dom.get("customImage").value = File.getFileURL(file);
+      }
+    ]]>
+  </script>
+</dialog>

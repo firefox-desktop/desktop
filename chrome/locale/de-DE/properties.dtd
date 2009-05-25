@@ -4,3 +4,7 @@
 <!ENTITY desktopthumb.CustomImage "Eigenes Bild">
 
 <!ENTITY desktopsearch.GiveFocus "Fokusiere beim Start">
+
+<!-- TBD -->
+<!ENTITY desktopfolder.BackgroundColor "Background color">
+

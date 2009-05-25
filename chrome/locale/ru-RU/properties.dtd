@@ -3,3 +3,5 @@
 <!ENTITY desktopthumb.CustomImage "Изображение">
 
 <!ENTITY desktopsearch.GiveFocus "Выделять при старте">
+
+<!ENTITY desktopfolder.BackgroundColor "Цвет фона">

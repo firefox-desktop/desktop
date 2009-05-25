@@ -102,8 +102,10 @@ function Thumbnail() {
 
   this.openProperties = function() {
     var param = { properties: Utils.clone(this.properties) };
+    var xul = 'widgets/thumbnail/' + 
+        (this.properties.isFolder ? 'folder' : 'properties') + '.xul';
 
-    openDialog("widgets/thumbnail/properties.xul", "properties",
+    openDialog(xul, "properties",
                "chrome,centerscreen,modal,resizable", param);
     if (param.properties) {
       var refreshNeeded = param.properties.url != this.properties.url ||

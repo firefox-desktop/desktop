@@ -36,7 +36,9 @@ function Storage(folderId) {
   }
 
   this.saveObject = function(object) {
-    if (object.id) Bookmark.updateBookmark(object.id, object.url, object.title);
+    if (object.id) {
+      if (!object.isFolder) Bookmark.updateBookmark(object.id, object.url, object.title);
+    } 
     else {
       if (object.isFolder) object.id = Bookmark.createFolder(object.title, folderId);
       else object.id = Bookmark.createBookmark(object.url, object.title, folderId);

@@ -65,9 +65,13 @@ var Bookmark = {
   getAnnotation: function(idOrUri, name) {
     var annotationService = Components.classes["@mozilla.org/browser/annotation-service;1"]
                             .getService(Components.interfaces.nsIAnnotationService);
-    return idOrUri instanceof Components.interfaces.nsIURI
+    try {
+        return idOrUri instanceof Components.interfaces.nsIURI
              ? annotationService.getPageAnnotation(idOrUri, name)
              : annotationService.getItemAnnotation(idOrUri, name);
+    } catch(e) {
+        return null;
+    }
   },
 
   setAnnotation: function(idOrUri, name, value) {

@@ -32,7 +32,7 @@ function Search() {
     }, false);
 
     var input = Dom.child(this.view, "search");
-    input.addEventListener("keyup", function(e) {
+    input.addEventListener("keypress", function(e) {
       if (e.keyCode == e.DOM_VK_RETURN) {
         doSearch.call(self, this.value);
       }

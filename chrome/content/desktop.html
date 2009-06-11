@@ -64,7 +64,7 @@
   }
   
   var properties = storage.getProperties();
-  if (properties.background) {
+  if (properties && properties.background) {
     document.body.style.backgroundColor=properties.background;
   }
   

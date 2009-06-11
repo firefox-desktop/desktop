@@ -60,10 +60,9 @@ var File = {
 
 var URL = {
   getNsiURL: function(url) {
-    var nsiUrl = Components.classes["@mozilla.org/network/standard-url;1"]
-               .createInstance(Components.interfaces.nsIURL);
-    nsiUrl.spec = url;
-    return nsiUrl;
+    var ioService = Components.classes["@mozilla.org/network/io-service;1"]  
+                              .getService(Components.interfaces.nsIIOService);
+    return ioService.newURI(url ? url : "about:blank", null, null);
   },
 
   getScheme: function(url) {
@@ -94,7 +93,7 @@ var URL = {
     var clientId = url.match(/^chrome:/) ? "image-chrome" : "image";
     var cacheSession = Components.classes["@mozilla.org/network/cache-service;1"]
                        .getService(Components.interfaces.nsICacheService)
-                       .createSession(clientId, 0, false);
+                       .createSession(clientId, Components.interfaces.nsICache.STORE_ANYWHERE, false);
     try {
       var entry = cacheSession.openCacheEntry(url,
                     Components.interfaces.nsICache.ACCESS_READ, false);

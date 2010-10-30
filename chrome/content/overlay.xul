@@ -8,10 +8,12 @@
 
   <script src="utils.js"/>
   <script src="file.js"/>
-  <script src="tabloader.js"/>
-  <script>
+  <script type="application/javascript">
     <![CDATA[
-      TabLoader.load("chrome://desktop/content/desktop.html");
+      let (newTabURI = "chrome://desktop/content/desktop.html") {
+         eval(BrowserOpenTab.toSource().replace(/about:blank/g, newTabURI));
+         eval(URLBarSetURI.toSource().replace(/}$/, 'if (gURLBar.value == "' + newTabURI + '") gURLBar.value = ""; $&'));
+      }
     ]]>
   </script>
 </overlay>

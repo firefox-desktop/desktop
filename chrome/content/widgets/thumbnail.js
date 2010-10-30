@@ -77,7 +77,9 @@ function Thumbnail() {
     // Fix for #17. This code disables Tab Mix Plus "Force new tab" option. Magic.
     var anchor = Dom.child(this.view, "a");
     anchor.addEventListener("click", function(e) {
-      e.stopPropagation(); return false;
+      if (e.button == 0 && !e.ctrlKey && !e.metaKey) {
+        e.stopPropagation(); return false;
+      }
     }, false);
 
     return this.view;

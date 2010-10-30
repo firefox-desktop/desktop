@@ -89,16 +89,12 @@ var URL = {
 
   removeFromCache: function(url) {
     if (!url) return;
-
-    var clientId = url.match(/^chrome:/) ? "image-chrome" : "image";
-    var cacheSession = Components.classes["@mozilla.org/network/cache-service;1"]
-                       .getService(Components.interfaces.nsICacheService)
-                       .createSession(clientId, Components.interfaces.nsICache.STORE_ANYWHERE, false);
     try {
-      var entry = cacheSession.openCacheEntry(url,
-                    Components.interfaces.nsICache.ACCESS_READ, false);
-      entry.doom();
+        var classID = Components.classes["@mozilla.org/image/cache;1"];
+        var cacheService = classID.getService(Components.interfaces.imgICache);
+        cacheService.removeEntry(URL.getNsiURL(url));
+    } catch (e) {
+        Components.utils.reportError(e);
     }
-    catch(e) {}
   }
 }

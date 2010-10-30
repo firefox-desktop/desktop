@@ -162,7 +162,8 @@ function Thumbnail() {
     var iframe = doc.createElement("browser");
     iframe.width = 1024;
     iframe.height = iframe.width*aspect;
-    iframe.setAttribute("type", "content");
+    iframe.setAttribute("type", "content-targetable");
+    iframe.style.overflow = "hidden";
     doc.getElementById("hidden-box").appendChild(iframe);
     return iframe;
   }

@@ -15,9 +15,16 @@
          eval(URLBarSetURI.toSource().replace(/}$/, 'if (gURLBar.value == "' + newTabURI + '") gURLBar.value = ""; $&'));
 
          addEventListener("load", function() {
-           eval(gBrowser.addTab.toSource()
+           var num = gBrowser.browsers.length;
+           for (var i = 0; i < num; i++) {
+             var b = gBrowser.getBrowserAtIndex(i);
+             if (b.currentURI.spec == 'about:blank') b.loadURI(newTabURI);
+           }
+           eval(
+             gBrowser.addTab.toSource()
              .replace(/function addTab/, 'gBrowser.addTab = function')
-             .replace(/{/, '{ if (aURI == "about:blank") { aURI = "'+ newTabURI +'"; }'));
+             .replace(/{/, '{ if (aURI == "about:blank") { aURI = "'+ newTabURI +'"; }')
+           );
          }, true); 
 
       }

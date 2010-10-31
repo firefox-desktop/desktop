@@ -23,7 +23,7 @@ function Storage(folderId) {
       var bookmark = bookmarks[i];
       try {
         var annotation = Bookmark.getAnnotation(bookmark.id, ANNOTATION);
-        Utils.merge(bookmark, eval(annotation));
+        Utils.merge(bookmark, Utils.fromJSON(annotation));
       }
       catch(e) { alert(e); }
     }
@@ -32,7 +32,7 @@ function Storage(folderId) {
   
   this.getProperties = function() {
     var annotation = Bookmark.getAnnotation(folderId, ANNOTATION);
-    return eval(annotation);
+    return Utils.fromJSON(annotation);
   }
 
   this.saveObject = function(object) {

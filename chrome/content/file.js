@@ -94,7 +94,6 @@ var URL = {
         var cacheService = classID.getService(Components.interfaces.imgICache);
         cacheService.removeEntry(URL.getNsiURL(url));
     } catch (e) {
-        Components.utils.reportError(e);
     }
   }
 }

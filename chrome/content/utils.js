@@ -1,4 +1,7 @@
 var Utils = {
+
+  JSON: null,
+  
   getQueryParams: function(url) {
     var params = new Array();
     var regexp = /[?&](\w+)=(\w+)/g;
@@ -44,29 +47,12 @@ var Utils = {
     return target;
   },
 
-  toJSON: function(object, level) {
-    var json = "";
-
-    for(var i in object) {
-      var value = object[i];
-      if (value == null || typeof value == "function") continue;
-
-      json += (json ? "," : "") + i + ":";
-      switch(typeof value) {
-        case "number":
-        case "boolean":
-            json += value;
-            break;
-        case "string":
-            json += "'" + value.replace(/([\\\'\n])/g, "\\$1") + "'"; /* This comment was added to fix Midnight commander colorizing bug " */
-            break;
-        default:
-            json += Utils.toJSON(value, level + 1);
-            break;
-      }
-    }
-    json = "{" + json + "}";
-    return level ? json : "(" + json + ")";
+  toJSON: function(object) {
+    return Utils.JSON.stringify(object);
+  },
+  
+  fromJSON: function(str) {
+    return Utils.JSON.parse(str);
   },
 
   confirm: function(message) {
@@ -99,3 +85,5 @@ var Utils = {
   }
  
 }
+
+Components.utils.import("resource://desktop/JSON.js", Utils);

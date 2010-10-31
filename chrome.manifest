@@ -1,6 +1,8 @@
 content desktop chrome/content/
 content desktop-profile ../../desktop/
 
+resource desktop chrome/modules/
+
 overlay chrome://browser/content/browser.xul chrome://desktop/content/overlay.xul
 
 skin desktop classic chrome/skin/

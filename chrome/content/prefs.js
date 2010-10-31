@@ -45,7 +45,7 @@ var Prefs = {
   },
 
   getObject: function(name) {
-    return eval(this.getCharPref(name));
+    return Utils.fromJSON(this.getCharPref(name));
   },
 
   setObject: function(name, value) {

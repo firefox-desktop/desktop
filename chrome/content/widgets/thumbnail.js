@@ -177,7 +177,13 @@ function Thumbnail() {
       onReady(iframe);
     }
     var iframe = createFrame(height/width);
-    iframe.addEventListener("load", onFrameLoad, true);
+    iframe.addEventListener("load", function(event) {
+      if (event.originalTarget instanceof HTMLDocument) {
+        var win = event.originalTarget.defaultView;
+        if (win.frameElement) return;
+      }
+      onFrameLoad(event);
+    }, true);
     var loadTimeout = setTimeout(onFrameLoad, TIMEOUT_LOAD);
     iframe.setAttribute("src", url);
   }

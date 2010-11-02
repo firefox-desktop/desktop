@@ -52,7 +52,17 @@ var Utils = {
   },
   
   fromJSON: function(str) {
-    return Utils.JSON.parse(str);
+    try {
+      return Utils.JSON.parse(str);
+    } catch (e) {
+      str = str.replace(/\(|\)/g, '').replace(/(\w+):/g, '"$1":')
+      try {
+        return Utils.JSON.parse(str);
+      } catch (e) {
+        Components.utils.reportError(e);
+      }
+      return {};
+    }
   },
 
   confirm: function(message) {

@@ -69,7 +69,7 @@
   }
   
   if (Desktop.isBackgroundImageSpecified()) {
-    document.body.style.backgroundImage="url(chrome://desktop-profile/content/background)";
+    document.body.style.backgroundImage="url(" + File.getDataFileURL("background") + ")";
   }
 
   ContextMenu.enable(document, Dom.get("menu"));

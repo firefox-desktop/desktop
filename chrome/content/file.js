@@ -9,6 +9,12 @@ var File = {
     }
     return dir;
   },
+  
+  getDataFileURL: function(file) {
+    var f = File.getDataDirectory();
+    f.append(file);
+    return File.getFileURL(f);
+  },
 
   writeFile: function(file, data) {
     var out = Components.classes["@mozilla.org/network/file-output-stream;1"]
@@ -52,10 +58,9 @@ var File = {
     var nsiFile = File.getNsiFile(file);
     var ios = Components.classes["@mozilla.org/network/io-service;1"]
               .getService(Components.interfaces.nsIIOService);
-    var fileHandler = ios.getProtocolHandler("file")
-                     .QueryInterface(Components.interfaces.nsIFileProtocolHandler);
-    return fileHandler.getURLSpecFromFile(nsiFile);
+    return ios.newFileURI(nsiFile).spec;
   }
+
 }
 
 var URL = {

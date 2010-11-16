@@ -27,7 +27,7 @@ function Thumbnail() {
   }
 
   getImageURL = function() {
-    return "chrome://desktop-profile/content/" + getImageName.call(this);
+    return File.getDataFileURL(getImageName.call(this));
   }
 
   this.getIconURL = function() {

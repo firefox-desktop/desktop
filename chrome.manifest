@@ -1,5 +1,4 @@
 content desktop chrome/content/
-content desktop-profile ../../desktop/
 
 resource desktop chrome/modules/
 

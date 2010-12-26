@@ -2,6 +2,9 @@
 
 <!ENTITY desktoppref.Background "Background">
 <!ENTITY desktoppref.BackgroundImage "Background image">
+<!ENTITY desktoppref.BackgroundStyle "Background style">
+<!ENTITY desktoppref.BackgroundTile "Tile">
+<!ENTITY desktoppref.BackgroundStretch "Stretch">
 
 <!ENTITY desktoppref.Positioning "Aligning">
 <!ENTITY desktoppref.GridSize "Grid size">

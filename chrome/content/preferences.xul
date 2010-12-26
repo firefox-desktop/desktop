@@ -11,16 +11,38 @@
     <prefpane id="general-pane" label="Main">
         <preferences>
             <preference id="extensions.desktop.gridInterval" name="extensions.desktop.gridInterval" type="int"/>
+            <preference id="extensions.desktop.backgroundStyle" name="extensions.desktop.backgroundStyle" type="int"/>
         </preferences>
         <groupbox flex="1">
             <caption label="&desktoppref.Background;"/>
-            <hbox align="center">
-                <label control="browse" flex="1">&desktoppref.BackgroundImage;: </label>
-                <button class="browse" label="&desktop.Browse;"
-                    oncommand="browseBackgroundImage();"/>                      
-                <button class="browse" label="&desktop.Clear;"
-                    oncommand="clearBackgroundImage(true);"/>                      
-            </hbox>
+            <grid>
+                <columns>
+                    <column flex="1"/>
+                    <column/>
+                </columns>
+                <rows>
+                    <row align="center">
+                        <label control="browse" flex="1">&desktoppref.BackgroundImage;: </label>
+                        <hbox>
+                            <button class="browse" label="&desktop.Browse;"
+                                oncommand="browseBackgroundImage();"/>                      
+                            <button class="browse" label="&desktop.Clear;"
+                                oncommand="clearBackgroundImage(true);"/>
+                        </hbox>
+                    </row>
+                    <row align="center">
+                        <label control="backgroundStyle" flex="1">&desktoppref.BackgroundStyle;: </label>
+                        <hbox>
+                            <menulist id="backgroundStyle" preference="extensions.desktop.backgroundStyle">
+                                <menupopup>
+                                    <menuitem label="&desktoppref.BackgroundTile;" value="1" />
+                                    <menuitem label="&desktoppref.BackgroundStretch;" value="2" />
+                                </menupopup>
+                            </menulist>
+                        </hbox>
+                    </row>
+                </rows>
+            </grid>
         </groupbox>
         <groupbox flex="1">
             <caption label="&desktoppref.Positioning;"/>

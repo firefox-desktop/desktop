@@ -2,6 +2,9 @@
 
 <!ENTITY desktoppref.Background "Фон">
 <!ENTITY desktoppref.BackgroundImage "Фоновое изображение">
+<!ENTITY desktoppref.BackgroundStyle "Стиль изображения">
+<!ENTITY desktoppref.BackgroundTile "Замостить">
+<!ENTITY desktoppref.BackgroundStretch "Растянуть">
 
 <!ENTITY desktoppref.Positioning "Выравнивание">
 <!ENTITY desktoppref.GridSize "Размер сетки">

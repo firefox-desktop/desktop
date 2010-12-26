@@ -2,6 +2,9 @@
 
 <!ENTITY desktoppref.Background "Hintergrund">
 <!ENTITY desktoppref.BackgroundImage "Hintergrundbild">
+<!ENTITY desktoppref.BackgroundStyle "Hintergrundstil">
+<!ENTITY desktoppref.BackgroundTile "Fliesen">
+<!ENTITY desktoppref.BackgroundStretch "Strecken">
 
 <!ENTITY desktoppref.Positioning "Ausrichtung">
 <!ENTITY desktoppref.GridSize "Rastergr&#246;&#223;e">

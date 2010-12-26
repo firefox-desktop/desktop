@@ -49,6 +49,8 @@ var Drag = {
   },
 
   onMouseUp: function(e) {
+    var theObject = Drag.object; 
+    Drag.object = null;
     if (Drag.inProgress) {
       Drag.removeGrid();
       Drag.removeGlass();
@@ -56,9 +58,8 @@ var Drag = {
 
       var event = document.createEvent("Event");
       event.initEvent("drop", false, false);
-      Drag.object.dispatchEvent(event);
+      theObject.dispatchEvent(event);
     }
-    Drag.object = null;
   },
 
   // Glass prevents onclick event after drop occurs

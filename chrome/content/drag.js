@@ -1,6 +1,6 @@
 var Drag = {
   MIN_DRAG: 10,
-  BORDER_WIDTH: 3,
+  BORDER_WIDTH: 5,
   click: { x: 0, y: 0, border: null },
   original: { left: 0, top: 0, width: 0, height: 0 },
   hover: null,

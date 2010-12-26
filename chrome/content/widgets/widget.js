@@ -61,10 +61,14 @@ function Widget() {
     this.view.addEventListener("drop", function() {
       self.properties.left = self.view.offsetLeft;
       self.properties.top = self.view.offsetTop;
+      var resized = (self.properties.width != self.view.clientWidth || self.properties.height != self.view.clientHeight);
       self.properties.width = self.view.clientWidth;
       self.properties.height = self.view.clientHeight;
       self.save.call(self);
       self.updateView.call(self);
+      if (resized) {
+        self.refresh.call(self);
+      }
     }, false);
 
     return this.view;

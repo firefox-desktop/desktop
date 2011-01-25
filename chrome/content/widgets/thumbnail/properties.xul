@@ -3,9 +3,9 @@
 <!DOCTYPE dialog SYSTEM "chrome://desktop/locale/properties.dtd">
 <dialog id="thumbnail-properties"
         title="&desktop.Properties;"
-        onload="initialize();"
-        ondialogaccept="onAccept();"
-        ondialogcancel="onCancel();"
+        onload="rtimushev.ffdesktop.ThumbnailPropertiesXul.initialize();"
+        ondialogaccept="rtimushev.ffdesktop.ThumbnailPropertiesXul.onAccept();"
+        ondialogcancel="rtimushev.ffdesktop.ThumbnailPropertiesXul.onCancel();"
         persist="width height"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
@@ -20,24 +20,31 @@
         <textbox id="url" type="autocomplete"
                  enablehistory="true" autocompletesearch="history"/>
         <button id="browseFile" label="&#x2026;"
-                oncommand="browseFile();"/>
+                oncommand="rtimushev.ffdesktop.ThumbnailPropertiesXul.browseFile();"/>
       </row>
       <row align="center">
         <label value="&desktopthumb.CustomImage;:"/>
         <textbox id="customImage" type="autocomplete" enablehistory="true"
                  autocompletesearch="history"/>
         <button id="browseCustomImage" label="&#x2026;"
-                oncommand="browseCustomImage();"/>
+                oncommand="rtimushev.ffdesktop.ThumbnailPropertiesXul.browseCustomImage();"/>
       </row>
     </rows>
   </grid>
 
+  <script src="../../namespace.js"/>
   <script src="../../utils.js"/>
   <script src="../../dom.js"/>
   <script src="../../file.js"/>
   <script>
     <![CDATA[
-      function initialize() {
+    rtimushev.ffdesktop.ThumbnailPropertiesXul = new function() {
+
+      var File = rtimushev.ffdesktop.File
+      var Dom  = rtimushev.ffdesktop.Dom
+      var URL  = rtimushev.ffdesktop.URL
+
+      this.initialize = function() {
         var properties = window.arguments[0].properties;
         Dom.get("url").value = properties.url || "";
         Dom.get("customImage").value = properties.customImage || "";
@@ -49,7 +56,7 @@
         }
       }
 
-      function onAccept() {
+      this.onAccept = function() {
         var properties = window.arguments[0].properties;
         var url = Dom.get("url").value;
         if (url != properties.url) properties.title = "";
@@ -57,19 +64,21 @@
         properties.customImage = Dom.get("customImage").value;
       }
 
-      function onCancel() {
+      this.onCancel = function() {
         window.arguments[0].properties = null;
       }
 
-      function browseFile() {
+      this.browseFile = function() {
         var file = File.chooseFile("open");
         if (file) Dom.get("url").value = File.getFileURL(file);
       }
 
-      function browseCustomImage() {
+      this.browseCustomImage = function() {
         var file = File.chooseFile("open", ["images"]);
         if (file) Dom.get("customImage").value = File.getFileURL(file);
       }
+
+    }
     ]]>
   </script>
 </dialog>

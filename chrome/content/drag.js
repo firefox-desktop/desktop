@@ -1,36 +1,40 @@
-var Drag = {
-  MIN_DRAG: 10,
-  BORDER_WIDTH: 5,
-  click: { x: 0, y: 0, border: null },
-  original: { left: 0, top: 0, width: 0, height: 0 },
-  hover: null,
-  object: null,
-  inProgress: false,
-  prevTarget: null,
+rtimushev.ffdesktop.Drag = new function() {
+
+  var Drag  = this
+  var Prefs = rtimushev.ffdesktop.Prefs
+
+  this.MIN_DRAG = 10;
+  this.BORDER_WIDTH = 5;
+  this.click = { x: 0, y: 0, border: null };
+  this.original = { left: 0, top: 0, width: 0, height: 0 };
+  this.hover = null;
+  this.object = null;
+  this.inProgress = false;
+  this.prevTarget = null;
   
-  enable: function(element, options) {
+  this.enable = function(element, options) {
     element.addEventListener("mousedown", Drag.onMouseDown, false);
     element.addEventListener("mouseover", Drag.onMouseOver, false);
     element.addEventListener("mouseout", Drag.onMouseOut, false);
     document.addEventListener("mouseup", Drag.onMouseUp, false);
     document.addEventListener("mousemove", Drag.onMouseMove, false);
-  },
+  };
 
-  disable: function(element) {
+  this.disable = function(element) {
     element.removeEventListener("mousedown", Drag.onMouseDown, false);
     element.removeEventListener("mouseover", Drag.onMouseOver, false);
     element.removeEventListener("mouseout", Drag.onMouseOut, false);
-  },
+  };
 
-  onMouseOver: function(e) {
+  this.onMouseOver = function(e) {
     Drag.hover = e.currentTarget;
-  },
+  };
 
-  onMouseOut: function(e) {
+  this.onMouseOut = function(e) {
     Drag.hover = null;
-  },
+  };
 
-  onMouseDown: function(e) {
+  this.onMouseDown = function(e) {
     if (e.target.nodeName == "INPUT") return;
 
     Drag.object = e.currentTarget;
@@ -46,9 +50,9 @@ var Drag = {
       borderHeight: Drag.object.offsetHeight - Drag.object.clientHeight
     }
     e.preventDefault();
-  },
+  };
 
-  onMouseUp: function(e) {
+  this.onMouseUp = function(e) {
     var theObject = Drag.object; 
     Drag.object = null;
     if (Drag.inProgress) {
@@ -60,11 +64,11 @@ var Drag = {
       event.initEvent("drop", false, false);
       theObject.dispatchEvent(event);
     }
-  },
+  };
 
   // Glass prevents onclick event after drop occurs
 
-  createGlass: function(element) {
+  this.createGlass = function(element) {
     var glass = document.createElement("div");
     glass.id = "glass";
     glass.style.position = "fixed";
@@ -74,14 +78,14 @@ var Drag = {
     glass.style.bottom = 0;
     glass.style.zIndex = 1000;
     document.body.appendChild(glass);
-  },
+  };
 
-  removeGlass: function() {
+  this.removeGlass = function() {
     var glass = document.getElementById("glass");
     glass.parentNode.removeChild(glass);
-  },
+  };
 
-  createGrid: function(element) {
+  this.createGrid = function(element) {
     Drag.gridInterval = Prefs.getInt("gridInterval");
     Drag.snapInterval = Drag.gridInterval * 0.2;
     var grid = document.createElement("div");
@@ -91,14 +95,14 @@ var Drag = {
     grid.style.height = "100%";
     grid.style.backgroundImage = "url(chrome://desktop/skin/grid" + Drag.gridInterval + ".png)";
     document.body.appendChild(grid);
-  },
+  };
 
-  removeGrid: function() {
+  this.removeGrid = function() {
     var grid = document.getElementById("grid");
     grid.parentNode.removeChild(grid);
-  },
+  };
 
-  getBorder: function(element, x, y) {
+  this.getBorder = function(element, x, y) {
     var border = "";
     var deltaLeft = x - element.offsetLeft,
         deltaTop = y - element.offsetTop,
@@ -110,9 +114,9 @@ var Drag = {
     if (deltaLeft > 0 && deltaLeft < Drag.BORDER_WIDTH) border += "w";
     else if (deltaRight > 0 && deltaRight < Drag.BORDER_WIDTH) border += "e";
     return border;
-  },
+  };
 
-  onMouseMove: function(e) {
+  this.onMouseMove = function(e) {
     if (!Drag.inProgress && Drag.object &&
         Math.abs(Drag.click.x - e.pageX) +
         Math.abs(Drag.click.y - e.pageY) > Drag.MIN_DRAG)
@@ -160,15 +164,15 @@ var Drag = {
       Drag.prevTarget = cursor == "" ? null : e.target;
       Drag.hover.style.cursor = e.target.style.cursor = cursor;
     }
-  },
+  };
   
-  snapToGrid: function(e, x) {
+  this.snapToGrid = function(e, x) {
     if (e.ctrlKey) return x;
     var gx = Math.round(x / Drag.gridInterval) * Drag.gridInterval;
     return (Math.abs(x - gx) < Drag.snapInterval) ? gx : x;
-  },
+  };
 
-  snap2ToGrid: function(e, x, szx) {
+  this.snap2ToGrid = function(e, x, szx) {
     if (e.ctrlKey) return x;
     var gx1 = Math.round(x / Drag.gridInterval) * Drag.gridInterval;
     var gx2 = Math.round((x + szx) / Drag.gridInterval) * Drag.gridInterval;
@@ -177,7 +181,7 @@ var Drag = {
     } else {
         return (Math.abs(x + szx - gx2) < Drag.snapInterval) ? gx2 - szx : x;
     }
-  }
+  };
 
-}
+};
 

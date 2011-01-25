@@ -1,8 +1,14 @@
-var ContextMenu = {
-  click: { x: 0, y: 0 },
-  current: null,
+rtimushev.ffdesktop.ContextMenu = new function() {
 
-  enable: function(element, menu) {
+  var ContextMenu = this
+  var Utils       = rtimushev.ffdesktop.Utils
+  var Dom         = rtimushev.ffdesktop.Dom
+  var Desktop     = rtimushev.ffdesktop.Desktop
+
+  this.click = { x: 0, y: 0 };
+  this.current = null,
+
+  this.enable = function(element, menu) {
     var handler = function(e) {
       if (e.button != 2) return;
       e.preventDefault();
@@ -12,9 +18,9 @@ var ContextMenu = {
     };
     element.addEventListener("contextmenu", handler, false);
     element.addEventListener("dblclick", handler, false);
-  },
+  };
 
-  open: function(menu, x, y) {
+  this.open = function(menu, x, y) {
     ContextMenu.close();
     
     if (!menu.translated) {
@@ -28,18 +34,18 @@ var ContextMenu = {
 
     document.addEventListener("click", ContextMenu.close, false);
     document.addEventListener("blur", ContextMenu.close, false);
-  },
+  };
 
-  close: function() {
+  this.close = function() {
     if (ContextMenu.current) {
       document.addEventListener("click", ContextMenu.close, false);
       document.addEventListener("blur", ContextMenu.close, false);
       Dom.remove(ContextMenu.current);
       ContextMenu.current = null;
     }
-  },
+  };
   
-  translate: function(menu) {
+  this.translate = function(menu) {
     for (var i=0; i<menu.childNodes.length; i++) {
       var node = menu.childNodes[i];
       if (node.nodeName=='LI') {
@@ -48,9 +54,9 @@ var ContextMenu = {
       }
       ContextMenu.translate(node);      
     }
-  },
+  };
 
-  showSubmenu: function(menu, x, y) {
+  this.showSubmenu = function(menu, x, y) {
     for(var i = 0; i < menu.childNodes.length; i++) {
       var child = menu.childNodes[i];
       if (child.nodeName != "LI") continue;
@@ -67,17 +73,17 @@ var ContextMenu = {
     menu.style.left = x;
     menu.style.top = y;
     menu.style.display = "block";
-  },
+  };
 
-  hideSubmenu: function(menu) {
+  this.hideSubmenu = function(menu) {
     menu.style.display = "none";
-  },
+  };
 
-  getSubmenu: function(item) {
+  this.getSubmenu = function(item) {
     return Dom.child(item, "ul");
-  },
+  };
 
-  onItemOver: function(e) {
+  this.onItemOver = function(e) {
     if (e.target != e.currentTarget) return;
 
     var menu = e.target.parentNode;
@@ -91,9 +97,10 @@ var ContextMenu = {
                          : ContextMenu.hideSubmenu(submenu);
       }
     }
-  },
+  };
 
-  onContainerClick: function(e) {
+  this.onContainerClick = function(e) {
     if (e.target == e.currentTarget) e.stopPropagation();
-  }
-}
+  };
+
+};

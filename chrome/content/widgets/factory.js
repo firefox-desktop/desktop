@@ -1,4 +1,8 @@
-function Factory(storage) {
+rtimushev.ffdesktop.Factory = function(storage) {
+
+  var Thumbnail = rtimushev.ffdesktop.Thumbnail
+  var Search = rtimushev.ffdesktop.Search
+
   function getURL(type) {
     switch(type) {
       case "search": return "desktop://search/";
@@ -36,4 +40,6 @@ function Factory(storage) {
     }
     return hasWidgets;
   }
-}
+
+};
+

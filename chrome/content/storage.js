@@ -1,4 +1,9 @@
-function Storage(folderId) {
+rtimushev.ffdesktop.Storage = function(folderId) {
+
+  var Utils    = rtimushev.ffdesktop.Utils
+  var Bookmark = rtimushev.ffdesktop.Bookmark
+
+
   const ROOT_TITLE = "Desktop";
   const ANNOTATION = "bookmarkProperties/description";
 
@@ -56,3 +61,4 @@ function Storage(folderId) {
     Bookmark.removeBookmark(id);
   }
 }
+

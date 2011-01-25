@@ -36,20 +36,32 @@
 
 <div id="quickstart" style="display: none;"></div>
 
+<script src="namespace.js"></script>
 <script src="utils.js"></script>
 <script src="dom.js"></script>
 <script src="file.js"></script>
 <script src="prefs.js"></script>
 <script src="drag.js"></script>
+<script src="desktop.js"></script>
 <script src="contextmenu.js"></script>
 <script src="bookmark.js"></script>
 <script src="storage.js"></script>
-<script src="desktop.js"></script>
 <script src="widgets/factory.js"></script>
 <script src="widgets/widget.js"></script>
 <script src="widgets/thumbnail.js"></script>
 <script src="widgets/search.js"></script>
 <script>
+(function() {
+
+  var Utils       = rtimushev.ffdesktop.Utils
+  var File        = rtimushev.ffdesktop.File
+  var Prefs       = rtimushev.ffdesktop.Prefs
+  var Storage     = rtimushev.ffdesktop.Storage
+  var Factory     = rtimushev.ffdesktop.Factory
+  var Dom         = rtimushev.ffdesktop.Dom
+  var ContextMenu = rtimushev.ffdesktop.ContextMenu
+  var Desktop     = rtimushev.ffdesktop.Desktop
+
   var params = Utils.getQueryParams(document.location);
   var storage = new Storage(params.folder);
   document.title = storage.getTitle();
@@ -81,4 +93,6 @@
   Dom.get("menu-prefs").addEventListener("click", function(e) {
     Desktop.openPreferences();
   }, false);
+
+})();
 </script>

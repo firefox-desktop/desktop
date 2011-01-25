@@ -6,6 +6,7 @@
     </hbox>
   </window>
 
+  <script src="namespace.js"/>
   <script src="utils.js"/>
   <script src="file.js"/>
   <script src="desktop.js"/>
@@ -15,11 +16,12 @@
 
          eval(URLBarSetURI.toSource().replace(/}$/, 'if (gURLBar.value == "' + newTabURI + '") gURLBar.value = ""; $&'));
 
-         var Watcher = {
+         rtimushev.ffdesktop.Watcher = new function() {
 
-            prefs: null,
+            var Watcher = this;
+            var Desktop = rtimushev.ffdesktop.Desktop
 
-            startup: function() {
+            this.startup = function() {
               eval(
                 gBrowser.addTab.toSource()
                   .replace(/function addTab/, 'gBrowser.addTab = function')
@@ -29,20 +31,20 @@
                              .getService(Components.interfaces.nsIPrefService)
                              .getBranch("extensions.desktop.");
               this.prefs.QueryInterface(Components.interfaces.nsIPrefBranch2);
-              this.prefs.addObserver("", this, false);
-            },
+              this.prefs.addObserver("", Watcher, false);
+            };
 
-            observe: function(subject, topic, data) {
+            this.observe = function(subject, topic, data) {
               if (topic != "nsPref:changed") return;
               switch(data) {
                 case "backgroundStyle":
                   Desktop.forEachDesktopBrowser(Desktop.reloadPage);
                   break;
               }
-            }
+            };
          };
 
-         addEventListener("load", function(e) { Watcher.startup(); }, true); 
+         addEventListener("load", function(e) { rtimushev.ffdesktop.Watcher.startup(); }, true); 
       }
     ]]>
   </script>

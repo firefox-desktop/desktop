@@ -1,5 +1,9 @@
-var Bookmark = {
-  query: function(folderId) {
+rtimushev.ffdesktop.Bookmark = new function() {
+
+  var Bookmark = this
+  var URL = rtimushev.ffdesktop.URL
+
+  this.query = function(folderId) {
     var historyService = Components.classes["@mozilla.org/browser/nav-history-service;1"]
                          .getService(Components.interfaces.nsINavHistoryService);
 
@@ -8,9 +12,9 @@ var Bookmark = {
     query.setFolders([folderId], 1);
 
     return historyService.executeQuery(query, options);
-  },
+  };
 
-  getBookmarks: function(folderId) {
+  this.getBookmarks = function(folderId) {
     var bookmarksService = Components.classes["@mozilla.org/browser/nav-bookmarks-service;1"]
                            .getService(Components.interfaces.nsINavBookmarksService);
     var result = Bookmark.query(folderId || bookmarksService.bookmarksMenuFolder);
@@ -28,41 +32,41 @@ var Bookmark = {
     }
     result.root.containerOpen = false;
     return bookmarks;
-  },
+  };
 
-  getTitle: function(id) {
+  this.getTitle = function(id) {
     var bookmarksService = Components.classes["@mozilla.org/browser/nav-bookmarks-service;1"]
                            .getService(Components.interfaces.nsINavBookmarksService);
     return bookmarksService.getItemTitle(id);
-  },
+  };
 
-  createFolder: function(title, parentId) {
+  this.createFolder = function(title, parentId) {
     var bookmarksService = Components.classes["@mozilla.org/browser/nav-bookmarks-service;1"]
                            .getService(Components.interfaces.nsINavBookmarksService);
     return bookmarksService.createFolder(parentId || bookmarksService.bookmarksMenuFolder, title, -1);
-  },
+  };
 
-  createBookmark: function(uri, title, folderId) {
+  this.createBookmark = function(uri, title, folderId) {
     var bookmarksService = Components.classes["@mozilla.org/browser/nav-bookmarks-service;1"]
                            .getService(Components.interfaces.nsINavBookmarksService);
     return bookmarksService.insertBookmark(folderId || bookmarksService.bookmarksMenuFolder,
                                            URL.getNsiURL(uri), -1, title);
-  },
+  };
 
-  updateBookmark: function(id, uri, title) {
+  this.updateBookmark = function(id, uri, title) {
     var bookmarksService = Components.classes["@mozilla.org/browser/nav-bookmarks-service;1"]
                            .getService(Components.interfaces.nsINavBookmarksService);
     bookmarksService.setItemTitle(id, title);
     bookmarksService.changeBookmarkURI(id, URL.getNsiURL(uri));
-  },
+  };
 
-  removeBookmark: function(id) {
+  this.removeBookmark = function(id) {
     var bookmarksService = Components.classes["@mozilla.org/browser/nav-bookmarks-service;1"]
                            .getService(Components.interfaces.nsINavBookmarksService);
     bookmarksService.removeItem(id);
-  },
+  };
 
-  getAnnotation: function(idOrUri, name) {
+  this.getAnnotation = function(idOrUri, name) {
     var annotationService = Components.classes["@mozilla.org/browser/annotation-service;1"]
                             .getService(Components.interfaces.nsIAnnotationService);
     try {
@@ -72,29 +76,31 @@ var Bookmark = {
     } catch(e) {
         return null;
     }
-  },
+  };
 
-  setAnnotation: function(idOrUri, name, value) {
+  this.setAnnotation = function(idOrUri, name, value) {
     var annotationService = Components.classes["@mozilla.org/browser/annotation-service;1"]
                             .getService(Components.interfaces.nsIAnnotationService);
     idOrUri instanceof Components.interfaces.nsIURI
       ? annotationService.setPageAnnotation(idOrUri, name, value, 0, annotationService.EXPIRE_MONTHS)
       : annotationService.setItemAnnotation(idOrUri, name, value, 0, annotationService.EXPIRE_MONTHS);
-  },
+  };
 
-  removeAnnotation: function(idOrUri, name) {
+  this.removeAnnotation = function(idOrUri, name) {
     var annotationService = Components.classes["@mozilla.org/browser/annotation-service;1"]
                             .getService(Components.interfaces.nsIAnnotationService);
     idOrUri instanceof Components.interfaces.nsIURI
       ? annotationService.removePageAnnotation(idOrUri, name)
       : annotationService.removeItemAnnotation(idOrUri, name);
-  },
+  };
 
-  getFaviconURL: function(url) {
+  this.getFaviconURL = function(url) {
     var faviconService = Components.classes["@mozilla.org/browser/favicon-service;1"]
                          .getService(Components.interfaces.nsIFaviconService);
     var nsiUrl = URL.getNsiURL(url);
     var faviconUrl = faviconService.getFaviconImageForPage(nsiUrl);
     return faviconUrl.spec;
-  }
-}
+  };
+
+};
+

@@ -1,4 +1,13 @@
-function Thumbnail() {
+rtimushev.ffdesktop.Thumbnail = function() {
+
+  var Thumbnail = rtimushev.ffdesktop.Thumbnail
+  var Utils     = rtimushev.ffdesktop.Utils
+  var Prefs     = rtimushev.ffdesktop.Prefs
+  var File      = rtimushev.ffdesktop.File
+  var Dom       = rtimushev.ffdesktop.Dom
+  var Widget    = rtimushev.ffdesktop.Widget
+  var URL       = rtimushev.ffdesktop.URL
+
   const TIMEOUT_LOAD = 60 * 1000;
   const TIMEOUT_RENDER = 0.5 * 1000;
   var loading;
@@ -44,6 +53,7 @@ function Thumbnail() {
 
     var anchor = Dom.child(this.view, "a");
     this.properties.url ? anchor.href = this.properties.url
+                        
                         : anchor.removeAttribute("href");
 
     var img = Dom.child(this.view, "img");
@@ -228,4 +238,4 @@ function Thumbnail() {
   }
 }
 
-Thumbnail.prototype = new Widget();
+rtimushev.ffdesktop.Thumbnail.prototype = new rtimushev.ffdesktop.Widget();

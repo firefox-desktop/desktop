@@ -6,7 +6,7 @@
     persist="width height"
     title="&desktoppref.Preferences;"
     dlgbuttons="accept,cancel"
-    onload="initialize();"
+    onload="rtimushev.ffdesktop.PreferencesXul.initialize();"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
     <prefpane id="general-pane" label="Main">
         <preferences>
@@ -25,9 +25,9 @@
                         <label control="browse" flex="1">&desktoppref.BackgroundImage;: </label>
                         <hbox>
                             <button class="browse" label="&desktop.Browse;"
-                                oncommand="browseBackgroundImage();"/>                      
+                                oncommand="rtimushev.ffdesktop.PreferencesXul.browseBackgroundImage();"/>                      
                             <button class="browse" label="&desktop.Clear;"
-                                oncommand="clearBackgroundImage(true);"/>
+                                oncommand="rtimushev.ffdesktop.PreferencesXul.clearBackgroundImage(true);"/>
                         </hbox>
                     </row>
                     <row align="center">
@@ -58,25 +58,35 @@
             </hbox>
         </groupbox>
     </prefpane>
-  
+ 
+    <script src="namespace.js"/>
     <script src="utils.js"/>
     <script src="desktop.js"/>
     <script src="file.js"/>
     <script>
     <![CDATA[
-        function initialize() {
+    rtimushev.ffdesktop.PreferencesXul = new function() {
+
+        var File    = rtimushev.ffdesktop.File
+        var Desktop = rtimushev.ffdesktop.Desktop
+
+        var redrawDesktop = function() {
+            Desktop.forEachDesktopBrowser(Desktop.reloadPage);
+        }
+
+        this.initialize = function() {
         }
         
-        function browseBackgroundImage() {
+        this.browseBackgroundImage = function() {
             var file = File.chooseFile("open", ["images"]);
             if (file) {
-                clearBackgroundImage(false);
+                this.clearBackgroundImage(false);
                 file.copyTo(File.getDataDirectory(), "background");
                 redrawDesktop();
             }
         }
 
-        function clearBackgroundImage(redraw) {
+        this.clearBackgroundImage = function(redraw) {
             var dir = File.getDataDirectory();
             dir.append("background");
             try {
@@ -85,9 +95,7 @@
             if (redraw) redrawDesktop();
         }
         
-        function redrawDesktop() {
-            Desktop.forEachDesktopBrowser(Desktop.reloadPage);
-        }
+    }
     ]]>
     </script>
 

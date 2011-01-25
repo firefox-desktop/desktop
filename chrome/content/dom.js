@@ -1,9 +1,12 @@
-var Dom = {
-  get: function(id) {
-    return document.getElementById(id);
-  },
+rtimushev.ffdesktop.Dom = new function() {
 
-  child: function(element, classOrType) {
+  var Dom = this
+
+  this.get = function(id) {
+    return document.getElementById(id);
+  };
+
+  this.child = function(element, classOrType) {
     var elements = [ element ];
     var regexp = new RegExp("\\b" + classOrType + "\\b");
 
@@ -15,28 +18,30 @@ var Dom = {
         elements.push(child);
       }
     }
-  },
+  };
 
-  parent: function(element, classOrType) {
+  this.parent = function(element, classOrType) {
     var regexp = new RegExp("\\b" + classOrType + "\\b");
 
     while(element = element.parentNode) {
       if (element.nodeName.toLowerCase() == classOrType ||
           element.className && element.className.match(regexp)) return element;
     }
-  },
+  };
 
-  prepend: function(parent, child) {
+  this.prepend = function(parent, child) {
     parent.insertBefore(child, parent.firstChild);
-  },
+  };
 
-  addClass: function(element, class) {
+  this.addClass = function(element, class) {
     if (element.className.indexOf(class) == -1) {
       element.className += " " + class;
     }
-  },
+  };
 
-  remove: function(element) {
+  this.remove = function(element) {
     element.parentNode.removeChild(element);
-  }
-}
+  };
+
+};
+

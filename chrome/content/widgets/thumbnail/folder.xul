@@ -3,9 +3,9 @@
 <!DOCTYPE dialog SYSTEM "chrome://desktop/locale/properties.dtd">
 <dialog id="folder-properties"
         title="&desktop.Properties;"
-        onload="initialize();"
-        ondialogaccept="onAccept();"
-        ondialogcancel="onCancel();"
+        onload="rtimushev.ffdesktop.ThumbnailFolderXul.initialize();"
+        ondialogaccept="rtimushev.ffdesktop.ThumbnailFolderXul.onAccept();"
+        ondialogcancel="rtimushev.ffdesktop.ThumbnailFolderXul.onCancel();"
         persist="width height"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
@@ -24,36 +24,44 @@
         <textbox id="customImage" type="autocomplete" enablehistory="true"
                  autocompletesearch="history"/>
         <button id="browseCustomImage" label="&#x2026;"
-                oncommand="browseCustomImage();"/>
+                oncommand="rtimushev.ffdesktop.ThumbnailFolderXul.browseCustomImage();"/>
       </row>
     </rows>
   </grid>
 
+  <script src="../../namespace.js"/>
   <script src="../../utils.js"/>
   <script src="../../dom.js"/>
   <script src="../../file.js"/>
   <script>
     <![CDATA[
-      function initialize() {
+    rtimushev.ffdesktop.ThumbnailFolderXul = new function() {
+
+      var File = rtimushev.ffdesktop.File
+      var Dom  = rtimushev.ffdesktop.Dom
+
+      this.initialize = function() {
         var properties = window.arguments[0].properties;
         Dom.get("customImage").value = properties.customImage || "";
         Dom.get("bgColor").value = properties.background || "#FFFFFF";
       }
 
-      function onAccept() {
+      this.onAccept = function() {
         var properties = window.arguments[0].properties;
         properties.customImage = Dom.get("customImage").value;
         properties.background = Dom.get("bgColor").value;
       }
 
-      function onCancel() {
+      this.onCancel = function() {
         window.arguments[0].properties = null;
       }
 
-      function browseCustomImage() {
+      this.browseCustomImage = function() {
         var file = File.chooseFile("open", ["images"]);
         if (file) Dom.get("customImage").value = File.getFileURL(file);
       }
+
+    }
     ]]>
   </script>
 </dialog>

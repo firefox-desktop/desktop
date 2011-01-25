@@ -1,4 +1,9 @@
-function Search() {
+rtimushev.ffdesktop.Search = function() {
+
+  var Search = rtimushev.ffdesktop.Search
+  var Utils = rtimushev.ffdesktop.Utils
+  var Dom = rtimushev.ffdesktop.Dom
+
   this.setProperties = function(properties) {
     Search.prototype.setProperties.call(this, properties);
 
@@ -73,4 +78,4 @@ function Search() {
   }
 }
 
-Search.prototype = new Widget();
+rtimushev.ffdesktop.Search.prototype = new rtimushev.ffdesktop.Widget();

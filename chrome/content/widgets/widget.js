@@ -1,4 +1,12 @@
-function Widget() {
+rtimushev.ffdesktop.Widget = function() {
+
+  var Utils    = rtimushev.ffdesktop.Utils
+  var Dom      = rtimushev.ffdesktop.Dom
+  var Bookmark = rtimushev.ffdesktop.Bookmark
+  var Drag     = rtimushev.ffdesktop.Drag
+  var Prefs    = rtimushev.ffdesktop.Prefs
+  var Desktop  = rtimushev.ffdesktop.Desktop
+  
   this.properties;
   this.view;
 
@@ -121,4 +129,4 @@ function Widget() {
   }
 }
 
-Widget.HEADER_HEIGHT = 20;
+rtimushev.ffdesktop.Widget.HEADER_HEIGHT = 20;

@@ -3,19 +3,32 @@
 <!DOCTYPE window SYSTEM "chrome://desktop/locale/properties.dtd">
 <dialog id="search-properties"
         title="&desktop.Properties;"
-        onload="initialize();"
-        ondialogaccept="onAccept();"
-        ondialogcancel="onCancel();"
+        onload="rtimushev.ffdesktop.SearchPropertiesXul.initialize();"
+        ondialogaccept="rtimushev.ffdesktop.SearchPropertiesXul.onAccept();"
+        ondialogcancel="rtimushev.ffdesktop.SearchPropertiesXul.onCancel();"
         persist="width height"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-  <listbox id="engines" ondblclick="Dom.get('search-properties').acceptDialog();"/>
+  <listbox id="engines" ondblclick="rtimushev.ffdesktop.Dom.get('search-properties').acceptDialog();"/>
   <checkbox id="focus" label="&desktopsearch.GiveFocus;" checked="false"/>
+
+  <script src="../../namespace.js"/>
   <script src="../../dom.js"/>
   <script src="../../prefs.js"/>
   <script>
     <![CDATA[
-      function initialize() {
+    rtimushev.ffdesktop.SearchPropertiesXul = new function() {
+
+      var Dom   = rtimushev.ffdesktop.Dom
+      var Prefs = rtimushev.ffdesktop.Prefs
+
+      var getEngines = function() {
+        var searchService = Components.classes["@mozilla.org/browser/search-service;1"]
+                            .getService(Components.interfaces.nsIBrowserSearchService);
+        return searchService.getEngines({});
+      }
+
+      this.initialize = function() {
         var properties = window.arguments[0].properties;
 
         var listbox = Dom.get("engines");
@@ -36,7 +49,7 @@
         }
       }
 
-      function onAccept() {
+      this.onAccept = function() {
         var properties = window.arguments[0].properties;
         properties.title = Dom.get("engines").selectedItem.label;
         if (Dom.get("focus").checked==true) {
@@ -47,15 +60,11 @@
         }
       }
 
-      function onCancel() {
+      this.onCancel = function() {
         window.arguments[0].properties = null;
       }
 
-      function getEngines() {
-        var searchService = Components.classes["@mozilla.org/browser/search-service;1"]
-                            .getService(Components.interfaces.nsIBrowserSearchService);
-        return searchService.getEngines({});
-      }
+    }
     ]]>
   </script>
 </dialog>

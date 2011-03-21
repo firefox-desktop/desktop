@@ -10,42 +10,10 @@
   <script src="utils.js"/>
   <script src="file.js"/>
   <script src="desktop.js"/>
-  <script type="application/javascript">
+  <script src="installer.js"/>
+  <script>
     <![CDATA[
-      let (newTabURI = "chrome://desktop/content/desktop.html") {
-
-         eval(URLBarSetURI.toSource().replace(/}$/, 'if (gURLBar.value == "' + newTabURI + '") gURLBar.value = ""; $&'));
-
-         rtimushev.ffdesktop.Watcher = new function() {
-
-            var Watcher = this;
-            var Desktop = rtimushev.ffdesktop.Desktop
-
-            this.startup = function() {
-              eval(
-                gBrowser.addTab.toSource()
-                  .replace(/function addTab/, 'gBrowser.addTab = function')
-                  .replace(/{/, '{ if (aURI == "about:blank") { aURI = "'+ newTabURI +'"; }')
-              );
-              this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
-                             .getService(Components.interfaces.nsIPrefService)
-                             .getBranch("extensions.desktop.");
-              this.prefs.QueryInterface(Components.interfaces.nsIPrefBranch2);
-              this.prefs.addObserver("", Watcher, false);
-            };
-
-            this.observe = function(subject, topic, data) {
-              if (topic != "nsPref:changed") return;
-              switch(data) {
-                case "backgroundStyle":
-                  Desktop.forEachDesktopBrowser(Desktop.reloadPage);
-                  break;
-              }
-            };
-         };
-
-         addEventListener("load", function(e) { rtimushev.ffdesktop.Watcher.startup(); }, true); 
-      }
+         rtimushev.ffdesktop.Installer.load()
     ]]>
   </script>
 </overlay>

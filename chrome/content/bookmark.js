@@ -53,6 +53,19 @@ rtimushev.ffdesktop.Bookmark = new function() {
                                            URL.getNsiURL(uri), -1, title);
   };
 
+  this.updateFolder = function(id, title) {
+    var bookmarksService = Components.classes["@mozilla.org/browser/nav-bookmarks-service;1"]
+                           .getService(Components.interfaces.nsINavBookmarksService);
+    bookmarksService.setItemTitle(id, title);
+    bookmarksService.changeBookmarkURI(id, URL.getNsiURL(uri));
+  };
+
+  this.updateFolder = function(id, title) {
+    var bookmarksService = Components.classes["@mozilla.org/browser/nav-bookmarks-service;1"]
+                           .getService(Components.interfaces.nsINavBookmarksService);
+    bookmarksService.setItemTitle(id, title);
+  };
+
   this.updateBookmark = function(id, uri, title) {
     var bookmarksService = Components.classes["@mozilla.org/browser/nav-bookmarks-service;1"]
                            .getService(Components.interfaces.nsINavBookmarksService);

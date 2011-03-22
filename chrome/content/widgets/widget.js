@@ -39,7 +39,7 @@ rtimushev.ffdesktop.Widget = function() {
     Drag.enable(this.view);
     this.updateView();
     if (this.properties.title == Prefs.getString("focus")) {
-	  var view = this.view;
+      var view = this.view;
       setTimeout(function () { 
         var node = Dom.child(view, "search");
         if (node) node.focus();

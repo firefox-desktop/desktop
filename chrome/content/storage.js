@@ -34,7 +34,7 @@ rtimushev.ffdesktop.Storage = function(folderId) {
     }
     return bookmarks;
   }
-  
+
   this.getProperties = function() {
     var annotation = Bookmark.getAnnotation(folderId, ANNOTATION);
     return Utils.fromJSON(annotation);
@@ -42,8 +42,9 @@ rtimushev.ffdesktop.Storage = function(folderId) {
 
   this.saveObject = function(object) {
     if (object.id) {
-      if (!object.isFolder) Bookmark.updateBookmark(object.id, object.url, object.title);
-    } 
+      if (object.isFolder) Bookmark.updateFolder(object.id, object.title);
+      else Bookmark.updateBookmark(object.id, object.url, object.title);
+    }
     else {
       if (object.isFolder) object.id = Bookmark.createFolder(object.title, folderId);
       else object.id = Bookmark.createBookmark(object.url, object.title, folderId);

@@ -39,6 +39,10 @@ rtimushev.ffdesktop.Dom = new function() {
     }
   };
 
+  this.removeClass = function(element, class) {
+    element.className = element.className.replace(new RegExp("((^)|( +))" + class + "(( +)|($))"), " ")
+  }
+
   this.remove = function(element) {
     element.parentNode.removeChild(element);
   };

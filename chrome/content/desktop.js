@@ -3,6 +3,7 @@ rtimushev.ffdesktop.Desktop = new function() {
     var Desktop = this
     var Utils   = rtimushev.ffdesktop.Utils
     var File    = rtimushev.ffdesktop.File
+    var Prefs   = rtimushev.ffdesktop.Prefs
 
     this.isDesktop = function(doc) {
         return doc && doc.location
@@ -37,15 +38,23 @@ rtimushev.ffdesktop.Desktop = new function() {
         bg.append("background");
         return bg.exists();
     };
-    
+
     this.translate = function(key) {
         if (!Desktop.bundle) {
-            Desktop.bundle = Components.classes["@mozilla.org/intl/stringbundle;1"]  
-                .getService(Components.interfaces.nsIStringBundleService)  
+            Desktop.bundle = Components.classes["@mozilla.org/intl/stringbundle;1"]
+                .getService(Components.interfaces.nsIStringBundleService)
                 .createBundle("chrome://desktop/locale/desktop.properties");
         }
         return Desktop.bundle.GetStringFromName(key);
     };
+
+    this.isLocked = function() {
+        return Prefs.getBool("lock");
+    };
+
+    this.setLocked = function(s) {
+        Prefs.setBool("lock", s);
+    }
 
 };
 

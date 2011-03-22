@@ -1,7 +1,14 @@
-<link rel="icon" type="image/png" href="chrome://desktop/skin/icon.png">
+<html>
 
+<head>
+
+<link rel="icon" type="image/png" href="chrome://desktop/skin/icon.png">
 <link rel="stylesheet" type="text/css" href="chrome://desktop/skin/contextmenu.css">
 <link rel="stylesheet" type="text/css" href="chrome://desktop/skin/desktop-page.css">
+
+</head>
+
+<body>
 
 <ul id="menu" class="contextmenu">
   <li id="menu-add">Add
@@ -11,6 +18,8 @@
       <li type="search">Search</li>
     </ul>
   </li>
+  <li id="menu-lock">Lock</li>
+  <li id="menu-unlock">Unlock</li>
   <li id="menu-prefs">Preferences</li>
 </ul>
 
@@ -38,14 +47,14 @@
 
 <script src="namespace.js"></script>
 <script src="utils.js"></script>
-<script src="dom.js"></script>
 <script src="file.js"></script>
+<script src="dom.js"></script>
 <script src="prefs.js"></script>
-<script src="drag.js"></script>
-<script src="desktop.js"></script>
-<script src="contextmenu.js"></script>
 <script src="bookmark.js"></script>
 <script src="storage.js"></script>
+<script src="desktop.js"></script>
+<script src="drag.js"></script>
+<script src="contextmenu.js"></script>
 <script src="widgets/factory.js"></script>
 <script src="widgets/widget.js"></script>
 <script src="widgets/thumbnail.js"></script>
@@ -68,24 +77,31 @@
 
   var factory = new Factory(storage);
   var hasWidgets = factory.createWidgets();
-  
+
   var quickstart = Dom.get("quickstart");
   if (!hasWidgets) {
     quickstart.innerHTML = Desktop.translate("quickstart");
     quickstart.style.display = "block";
   }
-  
+
   var properties = storage.getProperties();
   if (properties && properties.background) {
     document.body.style.backgroundColor=properties.background;
   }
-  
+
   if (Desktop.isBackgroundImageSpecified()) {
     document.body.style.backgroundImage="url(" + File.getDataFileURL("background") + ")";
     Dom.addClass(document.body, 'background-style-' + Prefs.getInt('backgroundStyle'));
   }
 
+  function updateLockStatus() {
+    var s = Desktop.isLocked();
+    Dom.removeClass(document.body, s ? 'unlock-edits' : 'lock-edits');
+    Dom.addClass(document.body, s ? 'lock-edits' : 'unlock-edits');
+  }
+
   ContextMenu.enable(document, Dom.get("menu"));
+
   Dom.get("menu-add").addEventListener("click", function(e) {
     quickstart.style.display = "none";
     factory.createWidget(e.target.type, ContextMenu.click.x, ContextMenu.click.y);
@@ -93,6 +109,20 @@
   Dom.get("menu-prefs").addEventListener("click", function(e) {
     Desktop.openPreferences();
   }, false);
+  Dom.get("menu-lock").addEventListener("click", function(e) {
+    Desktop.setLocked(true);
+    updateLockStatus();
+  }, false);
+  Dom.get("menu-unlock").addEventListener("click", function(e) {
+    Desktop.setLocked(false);
+    updateLockStatus();
+  }, false);
+
+  updateLockStatus();
 
 })();
 </script>
+
+</body>
+
+</html>

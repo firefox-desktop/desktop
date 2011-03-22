@@ -9,6 +9,7 @@
   <script src="namespace.js"/>
   <script src="utils.js"/>
   <script src="file.js"/>
+  <script src="prefs.js"/>
   <script src="desktop.js"/>
   <script src="installer.js"/>
   <script>

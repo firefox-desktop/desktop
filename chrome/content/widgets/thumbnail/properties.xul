@@ -34,8 +34,8 @@
 
   <script src="../../namespace.js"/>
   <script src="../../utils.js"/>
-  <script src="../../dom.js"/>
   <script src="../../file.js"/>
+  <script src="../../dom.js"/>
   <script>
     <![CDATA[
     rtimushev.ffdesktop.ThumbnailPropertiesXul = new function() {

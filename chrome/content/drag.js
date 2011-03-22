@@ -1,7 +1,8 @@
 rtimushev.ffdesktop.Drag = new function() {
 
-  var Drag  = this
-  var Prefs = rtimushev.ffdesktop.Prefs
+  var Drag    = this
+  var Prefs   = rtimushev.ffdesktop.Prefs
+  var Desktop = rtimushev.ffdesktop.Desktop
 
   this.MIN_DRAG = 10;
   this.BORDER_WIDTH = 5;
@@ -11,7 +12,7 @@ rtimushev.ffdesktop.Drag = new function() {
   this.object = null;
   this.inProgress = false;
   this.prevTarget = null;
-  
+
   this.enable = function(element, options) {
     element.addEventListener("mousedown", Drag.onMouseDown, false);
     element.addEventListener("mouseover", Drag.onMouseOver, false);
@@ -36,6 +37,7 @@ rtimushev.ffdesktop.Drag = new function() {
 
   this.onMouseDown = function(e) {
     if (e.target.nodeName == "INPUT") return;
+    if (Desktop.isLocked()) return;
 
     Drag.object = e.currentTarget;
     Drag.click.x = e.pageX;
@@ -161,6 +163,7 @@ rtimushev.ffdesktop.Drag = new function() {
       if (Drag.prevTarget && Drag.prevTarget != e.target) {
         Drag.prevTarget.style.cursor = "";
       }
+      if (Desktop.isLocked()) cursor = "";
       Drag.prevTarget = cursor == "" ? null : e.target;
       Drag.hover.style.cursor = e.target.style.cursor = cursor;
     }

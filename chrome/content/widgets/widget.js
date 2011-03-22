@@ -102,6 +102,7 @@ rtimushev.ffdesktop.Widget = function() {
   }
 
   this.editTitle = function() {
+    if (Desktop.isLocked()) return;
     var self = this;
     var title = Dom.child(self.view, "title");
 

@@ -125,3 +125,17 @@ br {
   left: 30%;
   text-align: center;
 }
+
+/* Lock-unlock */
+
+body.lock-edits #menu-lock,
+body.lock-edits #menu-add,
+body.lock-edits .button.remove,
+body.lock-edits .button.properties {
+  display: none;
+}
+
+body.unlock-edits #menu-unlock {
+  display: none;
+}
+

@@ -18,7 +18,7 @@ rtimushev.ffdesktop.Installer = new function() {
             return old2.apply(this, arguments);
         }
     }
-    
+
     var Watcher = new function() {
         this.observe = function(subject, topic, data) {
            if (topic != "nsPref:changed") return;
@@ -29,8 +29,9 @@ rtimushev.ffdesktop.Installer = new function() {
             }
         }
     }
-    
+
     function install() {
+        installNormal();
         this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
             .getService(Components.interfaces.nsIPrefService)
             .getBranch("extensions.desktop.");
@@ -39,7 +40,6 @@ rtimushev.ffdesktop.Installer = new function() {
     }
 
     this.load = function() {
-        installNormal();
         addEventListener("load", install, true);
     }
 

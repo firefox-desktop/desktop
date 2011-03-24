@@ -56,8 +56,10 @@ rtimushev.ffdesktop.Utils = new function() {
   this.toJSON = function(object) {
     return JSON.stringify(object);
   };
-  
+
   this.fromJSON = function(str) {
+    if (!str || /^ *$/.test(str))
+      return {};
     try {
       return JSON.parse(str);
     } catch (e) {

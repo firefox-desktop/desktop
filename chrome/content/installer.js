@@ -1,21 +1,28 @@
 rtimushev.ffdesktop.Installer = new function() {
 
-    var Desktop = rtimushev.ffdesktop.Desktop
+    var Desktop   = rtimushev.ffdesktop.Desktop
+    var Installer = this
 
-    var newTabURI = "chrome://desktop/content/desktop.html"
+    this.newTabURI = "chrome://desktop/content/desktop.html"
+
+    this.installed = false
+    this.oldURLBarSetURI
+    this.oldGBrowserAddTab
 
     function installNormal() {
-        var old1 = window.URLBarSetURI;
+        if (Installer.installed) return;
+        Installer.installed = true;
+        Installer.oldURLBarSetURI = window.URLBarSetURI;
         window.URLBarSetURI = function() {
-            var result = old1.apply(this, arguments);
-            if (gURLBar.value == newTabURI) gURLBar.value = "";
+            var result = rtimushev.ffdesktop.Installer.oldURLBarSetURI.apply(this, arguments);
+            if (gURLBar.value == rtimushev.ffdesktop.Installer.newTabURI) gURLBar.value = "";
             return result;
         }
-        var old2 = gBrowser.addTab;
+        Installer.oldGBrowserAddTab = gBrowser.addTab;
         gBrowser.addTab = function() {
             if (arguments.length > 0 && arguments[0] == 'about:blank')
-            arguments[0] = newTabURI;
-            return old2.apply(this, arguments);
+            arguments[0] = rtimushev.ffdesktop.Installer.newTabURI;
+            return rtimushev.ffdesktop.Installer.oldGBrowserAddTab.apply(this, arguments);
         }
     }
 
@@ -31,7 +38,7 @@ rtimushev.ffdesktop.Installer = new function() {
     }
 
     function install() {
-        installNormal();
+        setTimeout(installNormal, 0);
         this.prefs = Components.classes["@mozilla.org/preferences-service;1"]
             .getService(Components.interfaces.nsIPrefService)
             .getBranch("extensions.desktop.");

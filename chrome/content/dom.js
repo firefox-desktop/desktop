@@ -29,18 +29,18 @@ rtimushev.ffdesktop.Dom = new function() {
     }
   };
 
-  this.prepend = function(parent, child) {
-    parent.insertBefore(child, parent.firstChild);
+  this.prepend = function(parentNode, child) {
+    parent.insertBefore(child, parentNode.firstChild);
   };
 
-  this.addClass = function(element, class) {
-    if (element.className.indexOf(class) == -1) {
-      element.className += " " + class;
+  this.addClass = function(element, className) {
+    if (element.className.indexOf(className) == -1) {
+      element.className += " " + className;
     }
   };
 
-  this.removeClass = function(element, class) {
-    element.className = element.className.replace(new RegExp("((^)|( +))" + class + "(( +)|($))"), " ")
+  this.removeClass = function(element, className) {
+    element.className = element.className.replace(new RegExp("((^)|( +))" + className + "(( +)|($))"), " ")
   }
 
   this.remove = function(element) {

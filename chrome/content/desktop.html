@@ -120,6 +120,9 @@
 
   updateLockStatus();
 
+  // Disable cache for desktop page
+  window.onbeforeunload = function() { }
+
 })();
 </script>
 

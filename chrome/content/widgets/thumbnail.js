@@ -25,18 +25,12 @@ rtimushev.ffdesktop.Thumbnail = function() {
     }
   }
 
-  getImageName = function() {
-    return this.properties.id + ".png";
-  }
-
   getImageFile = function() {
-    var file = File.getDataDirectory();
-    file.append(getImageName.call(this));
-    return file;
+    return File.getDataFile(this.properties.id);
   }
 
   getImageURL = function() {
-    return File.getDataFileURL(getImageName.call(this));
+    return File.getFileURL(getImageFile.call(this));
   }
 
   this.getIconURL = function() {

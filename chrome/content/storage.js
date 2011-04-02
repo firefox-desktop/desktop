@@ -1,8 +1,8 @@
 rtimushev.ffdesktop.Storage = function(folderId) {
 
+  var File     = rtimushev.ffdesktop.File
   var Utils    = rtimushev.ffdesktop.Utils
   var Bookmark = rtimushev.ffdesktop.Bookmark
-
 
   const ROOT_TITLE = "Desktop";
   const ANNOTATION = "bookmarkProperties/description";
@@ -16,6 +16,12 @@ rtimushev.ffdesktop.Storage = function(folderId) {
           bookmarks[i].title == ROOT_TITLE) return bookmarks[i].id;
     }
     return Bookmark.createFolder(ROOT_TITLE);
+  }
+
+  function refreshFolder() {
+    try {
+      File.getDataFile(folderId).remove(false)
+    } catch (e) {}
   }
 
   this.getTitle = function() {
@@ -55,11 +61,14 @@ rtimushev.ffdesktop.Storage = function(folderId) {
       delete annotation[exclude[i]];
     }
     Bookmark.setAnnotation(object.id, ANNOTATION, Utils.toJSON(annotation));
+    refreshFolder.call(this);
   }
 
   this.removeObject = function(id) {
     Bookmark.removeAnnotation(id, ANNOTATION);
     Bookmark.removeBookmark(id);
+    refreshFolder.call(this);
   }
+
 }
 

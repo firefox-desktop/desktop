@@ -23,7 +23,7 @@ drag.js        : prefs.js, desktop.js
 file.js        :
 installer.js   : desktop.js
 prefs.js       : utils.js
-storage.js     : utils.js, bookmark.js
+storage.js     : utils.js, bookmark.js, file.js
 utils.js       :
 
  * Topological order *

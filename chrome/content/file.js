@@ -12,7 +12,13 @@ rtimushev.ffdesktop.File = new function() {
     }
     return dir;
   };
-  
+
+  this.getDataFile = function(id) {
+    var f = File.getDataDirectory();
+    f.append(id + ".png");
+    return f;
+  }
+
   this.getDataFileURL = function(file) {
     var f = File.getDataDirectory();
     f.append(file);

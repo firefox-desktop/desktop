@@ -15,7 +15,7 @@ rtimushev.ffdesktop.Installer = new function() {
         Installer.oldURLBarSetURI = window.URLBarSetURI;
         window.URLBarSetURI = function() {
             var result = rtimushev.ffdesktop.Installer.oldURLBarSetURI.apply(this, arguments);
-            if (gURLBar.value == rtimushev.ffdesktop.Installer.newTabURI) gURLBar.value = "";
+            if (gURLBar.value.substr(0, rtimushev.ffdesktop.Installer.newTabURI.length) === rtimushev.ffdesktop.Installer.newTabURI) gURLBar.value = "";
             return result;
         }
         Installer.oldGBrowserAddTab = gBrowser.addTab;

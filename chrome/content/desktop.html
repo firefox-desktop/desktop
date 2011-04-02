@@ -74,6 +74,9 @@
   var params = Utils.getQueryParams(document.location);
   var storage = new Storage(params.folder);
   document.title = storage.getTitle();
+  if (document.title == "" || document.title == "Desktop") {
+    document.title = Desktop.translate("Desktop");
+  }
 
   var factory = new Factory(storage);
   var hasWidgets = factory.createWidgets();

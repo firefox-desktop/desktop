@@ -1,5 +1,5 @@
-REVISION=`svnversion`
-XPI=Desktop_1.3_rev_$REVISION.xpi
+REVISION=`git describe --match='v*' | cut -dv -f2 | cut -d- -f1,2 | tr '-' '.'`
+XPI=Desktop_$REVISION.xpi
 echo "Revision: " $REVISION
 echo "XPI: " $XPI
 rm $XPI

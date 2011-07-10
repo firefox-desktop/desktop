@@ -30,7 +30,10 @@ rtimushev.ffdesktop.Thumbnail = function() {
   }
 
   getImageURL = function() {
-    return File.getFileURL(getImageFile.call(this));
+    if (this.properties.customImage)
+      return this.properties.customImage
+    else
+      return File.getFileURL(getImageFile.call(this));
   }
 
   this.getIconURL = function() {
@@ -68,7 +71,7 @@ rtimushev.ffdesktop.Thumbnail = function() {
       this.openProperties();
     }
 
-    if (!getImageFile.call(this).exists()) this.refresh();
+    if (!this.properties.customImage && !getImageFile.call(this).exists()) this.refresh();
     else this.updateView();
 
     var self = this;
@@ -78,7 +81,7 @@ rtimushev.ffdesktop.Thumbnail = function() {
       Prefs.setInt("thumbnail.height", self.properties.height);
     }, false);
 
-    // Fix for #17. This code disables Tab Mix Plus "Force new tab" option. Magic.
+    // This code disables Tab Mix Plus "Force new tab" option. Magic.
     var anchor = Dom.child(this.view, "a");
     anchor.addEventListener("click", function(e) {
       if (e.button == 0 && !e.ctrlKey && !e.metaKey) {
@@ -99,11 +102,13 @@ rtimushev.ffdesktop.Thumbnail = function() {
   }
 
   this.refresh = function() {
+    if (this.properties.customImage) {
+      this.updateView();
+      return;
+    }
     loading = true;
     this.updateView();
-
-    this.properties.customImage && this.properties.title
-      ? refreshCustomImage.call(this) : refreshImage.call(this);
+    refreshImage.call(this);
   }
 
   this.openProperties = function() {
@@ -136,13 +141,6 @@ rtimushev.ffdesktop.Thumbnail = function() {
         refreshCustomImage.call(self);
       }
       else saveImage.call(self, iframe);
-    });
-  }
-
-  function refreshCustomImage() {
-    var self = this;
-    loadImage(this.properties.customImage, this.properties.width, this.properties.height - Widget.HEADER_HEIGHT, function(iframe) {
-      saveImage.call(self, iframe);
     });
   }
 
@@ -190,28 +188,6 @@ rtimushev.ffdesktop.Thumbnail = function() {
     }, true);
     var loadTimeout = setTimeout(onFrameLoad, TIMEOUT_LOAD);
     iframe.setAttribute("src", url);
-  }
-
-  function loadImage(url, width, height, onReady) {
-    var url = url + "#" + new Date().getTime();
-
-    loadURI(url, width, height, function(iframe) {
-      var doc = iframe.contentDocument;
-      var img = doc.body.firstChild;
-
-      doc.body.style.width = img.width;
-      doc.body.style.height = img.height;
-      doc.body.style.background = "white";
-      doc.body.style.margin = 0;
-      doc.body.style.display = "table-cell";
-      doc.body.style.textAlign = "center";
-      doc.body.style.verticalAlign = "middle";
-
-      iframe.width = img.width;
-      iframe.height = img.height;
-
-      onReady(iframe);
-    });
   }
 
   function createImage(iframe, imageWidth, imageHeight) {

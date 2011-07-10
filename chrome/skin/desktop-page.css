@@ -139,3 +139,12 @@ body.unlock-edits #menu-unlock {
   display: none;
 }
 
+/* Decorations */
+
+body.no-decorations.lock-edits .widget  {
+  border: 1px transparent;
+}
+
+body.no-decorations.lock-edits .widget .header {
+  display: none;
+}

@@ -97,6 +97,10 @@
     Dom.addClass(document.body, 'background-style-' + Prefs.getInt('backgroundStyle'));
   }
 
+  if (!Desktop.areDecorationsVisible()) {
+    Dom.addClass(document.body, 'no-decorations');
+  }
+
   function updateLockStatus() {
     var s = Desktop.isLocked();
     Dom.removeClass(document.body, s ? 'unlock-edits' : 'lock-edits');

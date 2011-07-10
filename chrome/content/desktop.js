@@ -56,5 +56,9 @@ rtimushev.ffdesktop.Desktop = new function() {
         Prefs.setBool("lock", s);
     }
 
+    this.areDecorationsVisible = function() {
+        return Prefs.getBool("showDecorations");
+    };
+
 };
 

@@ -8,10 +8,12 @@ body {
 }
 
 .background-style-1 {
+  background-attachment: fixed;
 }
 
 .background-style-2 {
   background-size: cover;
+  background-attachment: fixed;
 }
 
 #factory {

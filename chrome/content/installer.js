@@ -1,6 +1,6 @@
-rtimushev.ffdesktop.Installer = new function() {
+rtimushev.ffdesktop.Installer = new function () {
 
-    var Desktop   = rtimushev.ffdesktop.Desktop
+    var Desktop = rtimushev.ffdesktop.Desktop
     var Installer = this
 
     this.newTabURI = "chrome://desktop/content/desktop.html"
@@ -13,26 +13,26 @@ rtimushev.ffdesktop.Installer = new function() {
         if (Installer.installed) return;
         Installer.installed = true;
         Installer.oldURLBarSetURI = window.URLBarSetURI;
-        window.URLBarSetURI = function() {
+        window.URLBarSetURI = function () {
             var result = rtimushev.ffdesktop.Installer.oldURLBarSetURI.apply(this, arguments);
             if (gURLBar.value.substr(0, rtimushev.ffdesktop.Installer.newTabURI.length) === rtimushev.ffdesktop.Installer.newTabURI) gURLBar.value = "";
             return result;
         }
         Installer.oldGBrowserAddTab = gBrowser.addTab;
-        gBrowser.addTab = function() {
+        gBrowser.addTab = function () {
             if (arguments.length > 0 && arguments[0] == 'about:blank')
-            arguments[0] = rtimushev.ffdesktop.Installer.newTabURI;
+                arguments[0] = rtimushev.ffdesktop.Installer.newTabURI;
             return rtimushev.ffdesktop.Installer.oldGBrowserAddTab.apply(this, arguments);
         }
     }
 
-    var Watcher = new function() {
-        this.observe = function(subject, topic, data) {
-           if (topic != "nsPref:changed") return;
-            switch(data) {
+    var Watcher = new function () {
+        this.observe = function (subject, topic, data) {
+            if (topic != "nsPref:changed") return;
+            switch (data) {
                 case "backgroundStyle":
-                Desktop.forEachDesktopBrowser(Desktop.reloadPage);
-                break;
+                    Desktop.forEachDesktopBrowser(Desktop.reloadPage);
+                    break;
             }
         }
     }
@@ -46,7 +46,7 @@ rtimushev.ffdesktop.Installer = new function() {
         this.prefs.addObserver("", Watcher, false);
     }
 
-    this.load = function() {
+    this.load = function () {
         addEventListener("load", install, true);
     }
 

@@ -1,20 +1,20 @@
-rtimushev.ffdesktop.Desktop = new function() {
+rtimushev.ffdesktop.Desktop = new function () {
 
     var Desktop = this
-    var Utils   = rtimushev.ffdesktop.Utils
-    var File    = rtimushev.ffdesktop.File
-    var Prefs   = rtimushev.ffdesktop.Prefs
+    var Utils = rtimushev.ffdesktop.Utils
+    var File = rtimushev.ffdesktop.File
+    var Prefs = rtimushev.ffdesktop.Prefs
 
-    this.isDesktop = function(doc) {
+    this.isDesktop = function (doc) {
         return doc && doc.location
-                && /chrome:\/\/desktop\/content\/desktop.html(\?.*)?/.test(doc.location.href);
+            && /chrome:\/\/desktop\/content\/desktop.html(\?.*)?/.test(doc.location.href);
     };
 
-    this.reloadPage = function(doc) {
+    this.reloadPage = function (doc) {
         doc.reload(false);
     };
 
-    this.forEachDesktopBrowser = function(onPage) {
+    this.forEachDesktopBrowser = function (onPage) {
         var gBrowser = Utils.getBrowser();
         for (var i = 0; i < gBrowser.browsers.length; i++) {
             var br = gBrowser.browsers[i];
@@ -23,23 +23,23 @@ rtimushev.ffdesktop.Desktop = new function() {
         }
     };
 
-    this.openPreferences = function() {
+    this.openPreferences = function () {
         if (!Desktop.prefsWindow || Desktop.prefsWindow.closed) {
             Desktop.prefsWindow = window.openDialog(
-                    "chrome://desktop/content/preferences.xul",
-                    "desktop-preferences-window",
-                    "chrome,toolbar,centerscreen,resizable=yes");
+                "chrome://desktop/content/preferences.xul",
+                "desktop-preferences-window",
+                "chrome,toolbar,centerscreen,resizable=yes");
         } else
             Desktop.prefsWindow.focus();
     };
 
-    this.isBackgroundImageSpecified = function() {
+    this.isBackgroundImageSpecified = function () {
         var bg = File.getDataDirectory();
         bg.append("background");
         return bg.exists();
     };
 
-    this.translate = function(key) {
+    this.translate = function (key) {
         if (!Desktop.bundle) {
             Desktop.bundle = Components.classes["@mozilla.org/intl/stringbundle;1"]
                 .getService(Components.interfaces.nsIStringBundleService)
@@ -48,15 +48,15 @@ rtimushev.ffdesktop.Desktop = new function() {
         return Desktop.bundle.GetStringFromName(key);
     };
 
-    this.isLocked = function() {
+    this.isLocked = function () {
         return Prefs.getBool("lock");
     };
 
-    this.setLocked = function(s) {
+    this.setLocked = function (s) {
         Prefs.setBool("lock", s);
     }
 
-    this.areDecorationsVisible = function() {
+    this.areDecorationsVisible = function () {
         return Prefs.getBool("showDecorations");
     };
 

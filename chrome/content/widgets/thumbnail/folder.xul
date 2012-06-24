@@ -9,59 +9,59 @@
         persist="width height"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-  <grid>
-    <columns>
-      <column/>
-      <column flex="1"/>
-    </columns>
-    <rows>
-      <row align="center">
-        <label value="&desktopfolder.BackgroundColor;:"/>
-        <textbox id="bgColor"/>
-      </row>
-      <row align="center">
-        <label value="&desktopthumb.CustomImage;:"/>
-        <textbox id="customImage" type="autocomplete" enablehistory="true"
-                 autocompletesearch="history"/>
-        <button id="browseCustomImage" label="&#x2026;"
-                oncommand="rtimushev.ffdesktop.ThumbnailFolderXul.browseCustomImage();"/>
-      </row>
-    </rows>
-  </grid>
+    <grid>
+        <columns>
+            <column/>
+            <column flex="1"/>
+        </columns>
+        <rows>
+            <row align="center">
+                <label value="&desktopfolder.BackgroundColor;:"/>
+                <textbox id="bgColor"/>
+            </row>
+            <row align="center">
+                <label value="&desktopthumb.CustomImage;:"/>
+                <textbox id="customImage" type="autocomplete" enablehistory="true"
+                         autocompletesearch="history"/>
+                <button id="browseCustomImage" label="&#x2026;"
+                        oncommand="rtimushev.ffdesktop.ThumbnailFolderXul.browseCustomImage();"/>
+            </row>
+        </rows>
+    </grid>
 
-  <script src="../../namespace.js"/>
-  <script src="../../utils.js"/>
-  <script src="../../file.js"/>
-  <script src="../../dom.js"/>
-  <script>
+    <script src="../../namespace.js"/>
+    <script src="../../utils.js"/>
+    <script src="../../file.js"/>
+    <script src="../../dom.js"/>
+    <script>
     <![CDATA[
-    rtimushev.ffdesktop.ThumbnailFolderXul = new function() {
+        rtimushev.ffdesktop.ThumbnailFolderXul = new function () {
 
-      var File = rtimushev.ffdesktop.File
-      var Dom  = rtimushev.ffdesktop.Dom
+            var File = rtimushev.ffdesktop.File
+            var Dom = rtimushev.ffdesktop.Dom
 
-      this.initialize = function() {
-        var properties = window.arguments[0].properties;
-        Dom.get("customImage").value = properties.customImage || "";
-        Dom.get("bgColor").value = properties.background || "#FFFFFF";
-      }
+            this.initialize = function () {
+                var properties = window.arguments[0].properties;
+                Dom.get("customImage").value = properties.customImage || "";
+                Dom.get("bgColor").value = properties.background || "#FFFFFF";
+            }
 
-      this.onAccept = function() {
-        var properties = window.arguments[0].properties;
-        properties.customImage = Dom.get("customImage").value;
-        properties.background = Dom.get("bgColor").value;
-      }
+            this.onAccept = function () {
+                var properties = window.arguments[0].properties;
+                properties.customImage = Dom.get("customImage").value;
+                properties.background = Dom.get("bgColor").value;
+            }
 
-      this.onCancel = function() {
-        window.arguments[0].properties = null;
-      }
+            this.onCancel = function () {
+                window.arguments[0].properties = null;
+            }
 
-      this.browseCustomImage = function() {
-        var file = File.chooseFile("open", ["images"]);
-        if (file) Dom.get("customImage").value = File.getFileURL(file);
-      }
+            this.browseCustomImage = function () {
+                var file = File.chooseFile("open", ["images"]);
+                if (file) Dom.get("customImage").value = File.getFileURL(file);
+            }
 
-    }
-    ]]>
+        }
+        ]]>
   </script>
 </dialog>

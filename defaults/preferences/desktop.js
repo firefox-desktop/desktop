@@ -6,3 +6,4 @@ pref("extensions.desktop.focus", "");
 pref("extensions.desktop.lock", false);
 pref("extensions.desktop.showDecorations", true);
 pref("extensions.desktop.overrideNewTab", false);
+pref("extensions.desktop.overrideHomePage", false);

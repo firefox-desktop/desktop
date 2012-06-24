@@ -2,6 +2,7 @@
 
 <!ENTITY desktoppref.General "General"><!-- TODO -->
 <!ENTITY desktoppref.OpenInNewTabs "Open in new tabs"><!-- TODO -->
+<!ENTITY desktoppref.UseAsHomePage "Use as home page"><!-- TODO -->
 
 <!ENTITY desktoppref.Background "Hintergrund">
 <!ENTITY desktoppref.BackgroundImage "Hintergrundbild">

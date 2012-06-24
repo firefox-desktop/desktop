@@ -2,6 +2,7 @@
 
 <!ENTITY desktoppref.General "Основные">
 <!ENTITY desktoppref.OpenInNewTabs "Открывать в новых вкладках">
+<!ENTITY desktoppref.UseAsHomePage "Использовать как домашнюю страницу">
 
 <!ENTITY desktoppref.Background "Фон">
 <!ENTITY desktoppref.BackgroundImage "Фоновое изображение">

@@ -36,11 +36,10 @@ rtimushev.ffdesktop.Installer = new function () {
         }
         if (!hasNewTab) return installPre13();
 
-        try {
-            if (Services.prefs.getBoolPref("extensions.desktop.overrideNewTab"))
-                Services.prefs.setCharPref("browser.newtab.url", rtimushev.ffdesktop.Installer.newTabURI);
-        } catch (ex) {
-        }
+        if (Services.prefs.getBoolPref("extensions.desktop.overrideNewTab"))
+            Services.prefs.setCharPref("browser.newtab.url", rtimushev.ffdesktop.Installer.newTabURI);
+        if (Services.prefs.getBoolPref("extensions.desktop.overrideHomePage"))
+            Services.prefs.setCharPref("browser.startup.homepage", rtimushev.ffdesktop.Installer.newTabURI);
 
         // Blank address line for desktop
         if (gInitialPages.indexOf(rtimushev.ffdesktop.Installer.newTabURI) == -1) {
@@ -65,18 +64,33 @@ rtimushev.ffdesktop.Installer = new function () {
                             Services.prefs.clearUserPref("browser.newtab.url");
                     }
                     break;
+                case "overrideHomePage":
+                    var useOurHomePage = Services.prefs.getBoolPref("extensions.desktop.overrideHomePage");
+                    if (useOurHomePage) {
+                        Services.prefs.setCharPref("browser.startup.homepage", rtimushev.ffdesktop.Installer.newTabURI);
+                    } else {
+                        var homeURL = Services.prefs.getCharPref("browser.startup.homepage");
+                        if (homeURL == rtimushev.ffdesktop.Installer.newTabURI)
+                            Services.prefs.clearUserPref("browser.startup.homepage");
+                    }
+                    break;
             }
         }
     }
 
-    var NewTabWatcher = new function () {
+    var BrowserWatcher = new function () {
         this.observe = function (subject, topic, data) {
             if (topic != "nsPref:changed") return;
             switch (data) {
-                case "url":
+                case "newtab.url":
                     var newTabURL = Services.prefs.getCharPref("browser.newtab.url");
                     if (newTabURL != rtimushev.ffdesktop.Installer.newTabURI)
                         Services.prefs.setBoolPref("extensions.desktop.overrideNewTab", false);
+                    break;
+                case "startup.homepage":
+                    var homeURL = Services.prefs.getCharPref("browser.startup.homepage");
+                    if (homeURL != rtimushev.ffdesktop.Installer.newTabURI)
+                        Services.prefs.setBoolPref("extensions.desktop.overrideHomePage", false);
                     break;
             }
         }
@@ -91,6 +105,9 @@ rtimushev.ffdesktop.Installer = new function () {
                     var newTabURL = Services.prefs.getCharPref("browser.newtab.url");
                     if (newTabURL == rtimushev.ffdesktop.Installer.newTabURI)
                         Services.prefs.clearUserPref("browser.newtab.url");
+                    var homeURL = Services.prefs.getCharPref("browser.startup.homepage");
+                    if (homeURL == rtimushev.ffdesktop.Installer.newTabURI)
+                        Services.prefs.clearUserPref("browser.startup.homepage");
                     break;
             }
         }
@@ -104,9 +121,9 @@ rtimushev.ffdesktop.Installer = new function () {
         this.prefs.QueryInterface(Components.interfaces.nsIPrefBranch2);
         this.prefs.addObserver("", Watcher, false);
 
-        this.newTabPrefs = this.prefsService.getBranch("browser.newtab.");
+        this.newTabPrefs = this.prefsService.getBranch("browser.");
         this.newTabPrefs.QueryInterface(Components.interfaces.nsIPrefBranch2);
-        this.newTabPrefs.addObserver("", NewTabWatcher, false);
+        this.newTabPrefs.addObserver("", BrowserWatcher, false);
 
         this.observerService = Components.classes["@mozilla.org/observer-service;1"]
             .getService(Components.interfaces.nsIObserverService);
@@ -115,7 +132,7 @@ rtimushev.ffdesktop.Installer = new function () {
 
     function uninstall() {
         this.observerService.removeObserver(LifecycleWatcher, "profile-before-change");
-        this.newTabPrefs.removeObserver("", NewTabWatcher);
+        this.newTabPrefs.removeObserver("", BrowserWatcher);
         this.prefs.removeObserver("", Watcher);
     }
 

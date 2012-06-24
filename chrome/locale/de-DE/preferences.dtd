@@ -1,5 +1,8 @@
 <!ENTITY desktoppref.Preferences "Desktop Einstellungen">
 
+<!ENTITY desktoppref.General "General"><!-- TODO -->
+<!ENTITY desktoppref.OpenInNewTabs "Open in new tabs"><!-- TODO -->
+
 <!ENTITY desktoppref.Background "Hintergrund">
 <!ENTITY desktoppref.BackgroundImage "Hintergrundbild">
 <!ENTITY desktoppref.BackgroundStyle "Hintergrundstil">

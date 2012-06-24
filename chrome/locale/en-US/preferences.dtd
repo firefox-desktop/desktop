@@ -1,5 +1,8 @@
 <!ENTITY desktoppref.Preferences "Desktop preferences">
 
+<!ENTITY desktoppref.General "General">
+<!ENTITY desktoppref.OpenInNewTabs "Open in new tabs">
+
 <!ENTITY desktoppref.Background "Background">
 <!ENTITY desktoppref.BackgroundImage "Background image">
 <!ENTITY desktoppref.BackgroundStyle "Background style">

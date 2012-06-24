@@ -1,5 +1,8 @@
 <!ENTITY desktoppref.Preferences "Настройки рабочего стола">
 
+<!ENTITY desktoppref.General "Основные">
+<!ENTITY desktoppref.OpenInNewTabs "Открывать в новых вкладках">
+
 <!ENTITY desktoppref.Background "Фон">
 <!ENTITY desktoppref.BackgroundImage "Фоновое изображение">
 <!ENTITY desktoppref.BackgroundStyle "Стиль изображения">

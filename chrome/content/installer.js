@@ -3,11 +3,14 @@ rtimushev.ffdesktop.Installer = new function () {
     var Desktop = rtimushev.ffdesktop.Desktop
     var Installer = this
 
+    this.addonId = "desktop@telega.phpnet.us"
     this.newTabURI = "chrome://desktop/content/desktop.html"
 
     this.installed = false
     this.oldURLBarSetURI
     this.oldGBrowserAddTab
+
+    var beingUninstalled = false
 
     function installPre13() {
         Installer.oldURLBarSetURI = window.URLBarSetURI;
@@ -102,13 +105,33 @@ rtimushev.ffdesktop.Installer = new function () {
             switch (topic) {
                 case "profile-before-change":
                     uninstall();
-                    var newTabURL = Services.prefs.getCharPref("browser.newtab.url");
-                    if (newTabURL == rtimushev.ffdesktop.Installer.newTabURI)
-                        Services.prefs.clearUserPref("browser.newtab.url");
-                    var homeURL = Services.prefs.getCharPref("browser.startup.homepage");
-                    if (homeURL == rtimushev.ffdesktop.Installer.newTabURI)
-                        Services.prefs.clearUserPref("browser.startup.homepage");
+                    if (beingUninstalled) {
+                        var newTabURL = Services.prefs.getCharPref("browser.newtab.url");
+                        if (newTabURL == rtimushev.ffdesktop.Installer.newTabURI)
+                            Services.prefs.clearUserPref("browser.newtab.url");
+                        var homeURL = Services.prefs.getCharPref("browser.startup.homepage");
+                        if (homeURL == rtimushev.ffdesktop.Installer.newTabURI)
+                            Services.prefs.clearUserPref("browser.startup.homepage");
+                    }
                     break;
+            }
+        }
+    }
+
+    var AddonListener = {
+        onUninstalling:function (addon) {
+            if (addon.id == rtimushev.ffdesktop.Installer.addonId) {
+                beingUninstalled = true;
+            }
+        },
+        onDisabling:function (addon) {
+            if (addon.id == rtimushev.ffdesktop.Installer.addonId) {
+                beingUninstalled = true;
+            }
+        },
+        onOperationCancelled:function (addon) {
+            if (addon.id == rtimushev.ffdesktop.Installer.addonId) {
+                beingUninstalled = (addon.pendingOperations & (AddonManager.PENDING_UNINSTALL | AddonManager.PENDING_DISABLE)) != 0;
             }
         }
     }
@@ -128,6 +151,9 @@ rtimushev.ffdesktop.Installer = new function () {
         this.observerService = Components.classes["@mozilla.org/observer-service;1"]
             .getService(Components.interfaces.nsIObserverService);
         this.observerService.addObserver(LifecycleWatcher, "profile-before-change", false)
+
+        Components.utils.import("resource://gre/modules/AddonManager.jsm");
+        AddonManager.addAddonListener(AddonListener);
     }
 
     function uninstall() {

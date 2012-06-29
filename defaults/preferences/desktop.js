@@ -5,5 +5,5 @@ pref("extensions.desktop.backgroundStyle", 1);
 pref("extensions.desktop.focus", "");
 pref("extensions.desktop.lock", false);
 pref("extensions.desktop.showDecorations", true);
-pref("extensions.desktop.overrideNewTab", false);
+pref("extensions.desktop.overrideNewTab", true);
 pref("extensions.desktop.overrideHomePage", false);

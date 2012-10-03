@@ -94,7 +94,7 @@ rtimushev.ffdesktop.Drag = new function () {
         grid.id = "grid";
         grid.style.zIndex = -1;
         grid.style.width = "100%";
-        grid.style.height = "100%";
+        grid.style.height = document.body.scrollHeight + "px";
         grid.style.backgroundImage = "url(chrome://desktop/skin/grid" + Drag.gridInterval + ".png)";
         document.body.appendChild(grid);
     };

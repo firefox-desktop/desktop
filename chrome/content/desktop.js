@@ -1,9 +1,10 @@
 rtimushev.ffdesktop.Desktop = new function () {
 
-    var Desktop = this
-    var Utils = rtimushev.ffdesktop.Utils
-    var File = rtimushev.ffdesktop.File
-    var Prefs = rtimushev.ffdesktop.Prefs
+    var Desktop = this;
+    var Utils = rtimushev.ffdesktop.Utils;
+    var File = rtimushev.ffdesktop.File;
+    var Prefs = rtimushev.ffdesktop.Prefs;
+    var Dom = rtimushev.ffdesktop.Dom;
 
     this.isDesktop = function (doc) {
         return doc && doc.location
@@ -54,10 +55,20 @@ rtimushev.ffdesktop.Desktop = new function () {
 
     this.setLocked = function (s) {
         Prefs.setBool("lock", s);
-    }
+    };
 
     this.areDecorationsVisible = function () {
         return Prefs.getBool("showDecorations");
+    };
+
+    this.refreshAll = function () {
+        var c = document.body.children;
+        for (var i = 0; i < c.length; i++) {
+            var r = Dom.child(c[i], "refresh");
+            if (r) {
+                r.click()
+            }
+        }
     };
 
 };

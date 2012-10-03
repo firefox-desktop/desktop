@@ -20,6 +20,7 @@
     </li>
     <li id="menu-lock">Lock</li>
     <li id="menu-unlock">Unlock</li>
+    <li id="menu-refresh">RefreshThumbnails</li>
     <li id="menu-prefs">Preferences</li>
 </ul>
 
@@ -123,6 +124,9 @@
         Dom.get("menu-unlock").addEventListener("click", function (e) {
             Desktop.setLocked(false);
             updateLockStatus();
+        }, false);
+        Dom.get("menu-refresh").addEventListener("click", function (e) {
+            Desktop.refreshAll()
         }, false);
 
         updateLockStatus();

@@ -108,11 +108,16 @@ rtimushev.ffdesktop.Bookmark = new function () {
     };
 
     this.getFaviconURL = function (url) {
-        var faviconService = Components.classes["@mozilla.org/browser/favicon-service;1"]
-            .getService(Components.interfaces.nsIFaviconService);
-        var nsiUrl = URL.getNsiURL(url);
-        var faviconUrl = faviconService.getFaviconImageForPage(nsiUrl);
-        return faviconUrl.spec;
+        try {
+          var faviconService = Components.classes["@mozilla.org/browser/favicon-service;1"]
+              .getService(Components.interfaces.nsIFaviconService);
+          var nsiUrl = URL.getNsiURL(url);
+          var faviconUrl = faviconService.getFaviconImageForPage(nsiUrl);
+          return faviconUrl.spec;
+        } catch(e) {
+          // Synchronous API is not supported in Firefox 21 and later
+          return null;
+        }
     };
 
 };

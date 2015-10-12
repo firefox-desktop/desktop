@@ -1,5 +1,8 @@
 rtimushev.ffdesktop.Installer = new function () {
 
+    const COMMONJS_URI = "resource://gre/modules/commonjs";
+    const { require } = Cu.import(COMMONJS_URI + "/toolkit/require.js", {});
+
     var Desktop = rtimushev.ffdesktop.Desktop
     var Installer = this
 
@@ -12,19 +15,9 @@ rtimushev.ffdesktop.Installer = new function () {
 
     var beingUninstalled = false
 
-    function installPre13() {
-        Installer.oldURLBarSetURI = window.URLBarSetURI;
-        window.URLBarSetURI = function () {
-            var result = rtimushev.ffdesktop.Installer.oldURLBarSetURI.apply(this, arguments);
-            if (gURLBar.value.substr(0, rtimushev.ffdesktop.Installer.newTabURI.length) === rtimushev.ffdesktop.Installer.newTabURI) gURLBar.value = "";
-            return result;
-        }
-        Installer.oldGBrowserAddTab = gBrowser.addTab;
-        gBrowser.addTab = function () {
-            if (arguments.length > 0 && arguments[0] == 'about:blank')
-                arguments[0] = rtimushev.ffdesktop.Installer.newTabURI;
-            return rtimushev.ffdesktop.Installer.oldGBrowserAddTab.apply(this, arguments);
-        }
+    function installPost41() {
+        const NewTabURL = require('resource:///modules/NewTabURL.jsm').NewTabURL;
+        NewTabURL.override(rtimushev.ffdesktop.Installer.newTabURI);
     }
 
     function installNormal() {
@@ -37,7 +30,7 @@ rtimushev.ffdesktop.Installer = new function () {
             hasNewTab = true;
         } catch (ex) {
         }
-        if (!hasNewTab) return installPre13();
+        if (!hasNewTab) return installPost41();
 
         if (Services.prefs.getBoolPref("extensions.desktop.overrideNewTab"))
             Services.prefs.setCharPref("browser.newtab.url", rtimushev.ffdesktop.Installer.newTabURI);
